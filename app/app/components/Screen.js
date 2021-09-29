@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
 
 import defaultStyles from "../config/styles";
@@ -9,15 +9,17 @@ import ListItemSeparator from "./ListItemSeparator";
 
 function Screen({ children, style, title }) {
   return (
-    <View style={[styles.container, style]}>
-      {title && (
-        <View style={styles.headerContainer}>
-          <AppText style={defaultStyles.headerText1}>{title}</AppText>
-          <ListItemSeparator color={colors.primary}></ListItemSeparator>
-        </View>
-      )}
-      {children}
-    </View>
+    <SafeAreaView style={[styles.container, style]}>
+      <ScrollView>
+        {title && (
+          <View style={styles.headerContainer}>
+            <AppText style={defaultStyles.headerText1}>{title}</AppText>
+            <ListItemSeparator color={colors.primary}></ListItemSeparator>
+          </View>
+        )}
+        {children}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

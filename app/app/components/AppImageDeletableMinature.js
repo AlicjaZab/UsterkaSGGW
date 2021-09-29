@@ -8,7 +8,7 @@ function AppImageDeletableMinature({ imageUri, onRemove }) {
     if (!imageUri) selectImage();
     else
       Alert.alert("Usuń zdjęcie", "Usunąć zdjęcie?", [
-        { text: "Tak", onPress: () => onRemove(null) },
+        { text: "Tak", onPress: () => onRemove(imageUri) }, //here was null -> why ??
         { text: "Nie" },
       ]);
   };

@@ -14,6 +14,10 @@ import AppImageInput from "../components/AppImageInput";
 import AppFormImagePicker from "../components/form/AppFormImagePicker";
 import AppFormItem from "../components/form/AppFormItem";
 import reportsApi from "../api/reports";
+import mediaObjectApi from "../api/mediaObject";
+import createFormData from "../utils/createFormData";
+import { useFormikContext } from "formik";
+import AppSmallButton from "../components/AppSmallButton";
 
 const validationSchema = Yup.object().shape({
   photos: Yup.array()
@@ -38,29 +42,32 @@ const categories = [
   { label: "Sprzęt elektryczny", value: "electrical-equipment" },
 ];
 
-let photos = [];
-
 function AddReportScreen(props) {
-  const [report, setReport] = useState([]);
+  // const [report, setReport] = useState([]);
 
   // sendReport(() => {
   //   loadReports();
   // }, []);
 
   const handleSubmit = (values) => {
+    const photoIds = [];
+    for (let i of values.photos) {
+      photoIds.push("/api/media_objects/" + i.id);
+    }
     console.log(values);
-    setReport({
+    const report = {
       category: values.category.label,
       description: values.description,
       status: "new",
-      createDate: "2021-09-25T17:12:08.815Z",
+      createDate: new Date(),
       closeDate: null,
-    });
+      photos: photoIds,
+    };
     console.log(report);
-    sendReport();
+    sendReport(report);
   };
 
-  const sendReport = async () => {
+  const sendReport = async (report) => {
     const response = await reportsApi.postReport(report);
     //const response = await reportsApi.getReportsList();
     console.log(response);
@@ -88,15 +95,31 @@ function AddReportScreen(props) {
         >
           <AppFormPicker items={categories} name="category" />
         </AppFormItem>
+
+        <AppFormItem
+          label="Lokalizacja"
+          name="location"
+          required={true}
+          description="Dodaj opis lokalizacji, jeśli nie możesz podać geolokalizacji, lub możesz ją doprecyzować."
+        >
+          <AppSmallButton label="+ Dodaj geolokalizację" />
+          <AppFormTextInput
+            name="location"
+            placeholder="np. Budynek ..., sala ..."
+          />
+        </AppFormItem>
+
         <AppFormItem label="Opis" name="description">
-          <AppFormTextInput name="description" />
+          <AppFormTextInput
+            name="description"
+            placeholder="Jeśli należy doprecyzować problem..."
+          />
         </AppFormItem>
 
-        <AppFormItem label="Lokalizacja" name="location" required={true}>
-          <AppFormTextInput name="location" />
-        </AppFormItem>
-
-        <SubmitButton label="Wyślij zgłoszenie"></SubmitButton>
+        <SubmitButton
+          label="Wyślij zgłoszenie"
+          style={{ marginBottom: 40 }}
+        ></SubmitButton>
       </AppForm>
     </Screen>
   );

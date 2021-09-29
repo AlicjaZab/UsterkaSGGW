@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ReportRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,7 +33,9 @@ use Doctrine\ORM\Mapping as ORM;
 *
  * @ORM\Entity(repositoryClass=ReportRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    //denormalizationContext: ['groups' => ['photos']]
+)]
 class Report
 {
     /**
@@ -65,6 +69,16 @@ class Report
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $closeDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="report")
+     */
+    private $photos;
+
+    public function __construct()
+    {
+        $this->photos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,6 +141,36 @@ class Report
     public function setCloseDate(?\DateTimeInterface $closeDate): self
     {
         $this->closeDate = $closeDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaObject[]
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(MediaObject $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos[] = $photo;
+            $photo->setReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(MediaObject $photo): self
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getReport() === $this) {
+                $photo->setReport(null);
+            }
+        }
 
         return $this;
     }

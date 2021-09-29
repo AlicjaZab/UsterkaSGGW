@@ -14,15 +14,15 @@ function AppImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
         <View style={styles.container}>
-          {imageUris.map((uri) => (
-            <View key={uri} style={styles.image}>
+          {imageUris.map((image) => (
+            <View key={image.uri} style={styles.image}>
               <AppImageDeletableMinature
-                imageUri={uri}
-                onRemove={() => onRemoveImage(uri)}
+                imageUri={image.uri}
+                onRemove={() => onRemoveImage(image.uri)}
               />
             </View>
           ))}
-          <AppImageInput onPress={(uri) => onAddImage(uri)} />
+          <AppImageInput onPress={(image) => onAddImage(image)} />
         </View>
       </ScrollView>
     </View>

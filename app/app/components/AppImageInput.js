@@ -11,7 +11,7 @@ function AppImageInput({ onPress }) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
       });
-      if (!result.cancelled) onPress(result.uri);
+      if (!result.cancelled) onPress(result);
     } catch (error) {
       console.log("Błąd podczas ładowania zdjęcia", error);
     }
