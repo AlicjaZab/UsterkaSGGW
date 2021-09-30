@@ -18,6 +18,7 @@ import mediaObjectApi from "../api/mediaObject";
 import createFormData from "../utils/createFormData";
 import { useFormikContext } from "formik";
 import AppSmallButton from "../components/AppSmallButton";
+import MapView from "react-native-maps";
 
 const validationSchema = Yup.object().shape({
   photos: Yup.array()
@@ -42,7 +43,7 @@ const categories = [
   { label: "Sprzęt elektryczny", value: "electrical-equipment" },
 ];
 
-function AddReportScreen(props) {
+function AddReportScreen({ navigation }) {
   // const [report, setReport] = useState([]);
 
   // sendReport(() => {
@@ -61,6 +62,11 @@ function AddReportScreen(props) {
       status: "new",
       createDate: new Date(),
       closeDate: null,
+      location: {
+        description: values.location,
+        latitude: 52.1627100327421, //TODO make those be applied by users location
+        longitude: 21.046186812386278,
+      },
       photos: photoIds,
     };
     console.log(report);
@@ -73,11 +79,12 @@ function AddReportScreen(props) {
     console.log(response);
     //setReports(response.data);
     //or redirect to appropriate screen, display appropriate error message
-    return true;
+    //return true;
+    navigation.navigate("ReportDetailsScreen", { data: response.data });
   };
 
   return (
-    <Screen title="Formularz zgłoszenia">
+    <Screen>
       <AppForm
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -91,7 +98,7 @@ function AddReportScreen(props) {
           label="Kategoria"
           name="category"
           required={true}
-          description="Kategoria zostanie wybrana automtycznie na podstwie dodanych zdjęć, jednak możesz ją zmienić."
+          description="Kategoria zostanie wybrana automatycznie na podstwie dodanych zdjęć, jednak możesz ją zmienić."
         >
           <AppFormPicker items={categories} name="category" />
         </AppFormItem>
@@ -103,6 +110,17 @@ function AddReportScreen(props) {
           description="Dodaj opis lokalizacji, jeśli nie możesz podać geolokalizacji, lub możesz ją doprecyzować."
         >
           <AppSmallButton label="+ Dodaj geolokalizację" />
+          {/* <View style={{ width: 500, height: 500 }}>
+            <MapView
+              initialRegion={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            />
+          </View> */}
+
           <AppFormTextInput
             name="location"
             placeholder="np. Budynek ..., sala ..."

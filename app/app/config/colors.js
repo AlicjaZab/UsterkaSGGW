@@ -4,6 +4,7 @@ export default {
   light: "#d3d3d3",
   dark: "#555555",
   white: "#ffffff",
+  black: "#000000",
   background: "#efefef",
   inputField: "#d8d8d8",
   danger: "#f44336",

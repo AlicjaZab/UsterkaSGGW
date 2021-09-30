@@ -7,6 +7,7 @@ use App\Repository\ReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * add chere a małpa and scpecify exactly what operations to use and how
@@ -34,6 +35,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=ReportRepository::class)
  */
 #[ApiResource(
+    normalizationContext: ['groups' => ['report-read']],
+    denormalizationContext: ['groups' => ['report-write']]
     //denormalizationContext: ['groups' => ['photos']]
 )]
 class Report
@@ -47,33 +50,51 @@ class Report
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({"report-write", "report-read"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"report-write", "report-read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({"report-write", "report-read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"report-write", "report-read"})
      */
     private $createDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"report-write", "report-read"})
      */
     private $closeDate;
 
     /**
      * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="report")
+     * @Groups({"report-write", "report-read"})
      */
     private $photos;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Location::class, mappedBy="report", cascade={"persist", "remove"})
+     * @Groups({"report-write", "report-read"})
+     */
+    private $location;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=StaffPerson::class)
+     * @Groups({"report-read"})
+     */
+    private $assignedPerson;
 
     public function __construct()
     {
@@ -171,6 +192,35 @@ class Report
                 $photo->setReport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(Location $location): self
+    {
+        // set the owning side of the relation if necessary
+        if ($location->getReport() !== $this) {
+            $location->setReport($this);
+        }
+
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getAssignedPerson(): ?StaffPerson
+    {
+        return $this->assignedPerson;
+    }
+
+    public function setAssignedPerson(?StaffPerson $assignedPerson): self
+    {
+        $this->assignedPerson = $assignedPerson;
 
         return $this;
     }
