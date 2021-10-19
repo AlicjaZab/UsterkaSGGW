@@ -53,14 +53,15 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     width: "80%",
     padding: 10,
-    marginBottom: 50,
-    flex: 0.4,
+    marginBottom: 70,
+    flex: 0.7,
+    //backgroundColor: "white",
     justifyContent: "space-between",
   },
   descriptionText: {
     textAlign: "center",
     width: 200,
-    marginTop: 20,
+    // marginTop: 20,
   },
   logo: {
     // marginVertical: 10,
@@ -71,12 +72,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 20,
     paddingTop: 10,
+    marginVertical: 10,
     borderRadius: 90,
   },
   logoContainer: {
-    position: "absolute",
+    //position: "absolute",
     alignItems: "center",
-    top: 100,
+    marginBottom: 20,
+    //top: 100,
   },
 });
 

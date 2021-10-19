@@ -1,7 +1,10 @@
 import { create } from "apisauce";
+import { serverUrl } from "../config/constants";
+
+const baseURL = serverUrl + "/api";
 
 const apiClient = create({
-  baseURL: "http://10.0.2.2:8000/api", //address taken from here https://stackoverflow.com/questions/38418998/react-native-fetch-network-request-failed
+  baseURL: baseURL,
 });
 
 export default apiClient;

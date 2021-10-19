@@ -27,8 +27,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
     flex: 1,
-    padding: 10,
-    paddingTop: Constants.statusBarHeight,
+    //margin: 10,
+    marginHorizontal: 10,
+    //paddingTop: Constants.statusBarHeight,
   },
   headerContainer: {
     marginTop: 20,

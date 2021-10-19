@@ -5,9 +5,17 @@ import { View } from "react-native";
 
 function AppDetailsItem({ title, children }) {
   return (
-    <View style={{ paddingVertical: 10 }}>
+    <View
+      style={{
+        marginVertical: 5,
+        padding: 5,
+        paddingLeft: 10,
+        backgroundColor: "white",
+        borderRadius: 20,
+      }}
+    >
       <AppText style={styles.headerText2}>{title}:</AppText>
-      <AppText>{children}</AppText>
+      {children && <AppText>{children}</AppText>}
     </View>
   );
 }

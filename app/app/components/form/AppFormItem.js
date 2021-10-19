@@ -7,11 +7,18 @@ import ErrorMessage from "./ErrorMessage";
 import defaultStyles from "../../config/styles";
 import colors from "../../config/colors";
 
-function AppFormItem({ label, name, description, required = false, children }) {
+function AppFormItem({
+  label,
+  name,
+  description,
+  required = false,
+  children,
+  style,
+}) {
   const { errors, touched } = useFormikContext();
 
   return (
-    <View style={defaultStyles.formItemContainer}>
+    <View style={[defaultStyles.formItemContainer, style]}>
       <AppText style={defaultStyles.headerText2}>
         {label}
         {required && " *"}

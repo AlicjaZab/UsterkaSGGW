@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: colors.dangerBackground,
     borderRadius: 15,
+    marginRight: 30,
   },
   errorMessage: {
     color: colors.danger,

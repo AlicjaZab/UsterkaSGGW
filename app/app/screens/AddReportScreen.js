@@ -90,7 +90,12 @@ function AddReportScreen({ navigation }) {
         validationSchema={validationSchema}
         onSubmit={(values) => handleSubmit(values)}
       >
-        <AppFormItem label="Zdjęcia" name="photos" required={true}>
+        <AppFormItem
+          label="Zdjęcia"
+          name="photos"
+          required={true}
+          style={{ marginTop: 20 }}
+        >
           <AppFormImagePicker label="Zdjęcia" name="photos" required={true} />
         </AppFormItem>
 

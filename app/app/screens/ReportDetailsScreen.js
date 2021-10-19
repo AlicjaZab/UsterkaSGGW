@@ -6,11 +6,40 @@ import Moment from "moment";
 import AppDetailsItem from "../components/AppDetailsItem";
 import AppText from "../components/AppText";
 import mediaObjectApi from "../api/mediaObject";
+import { serverUrl } from "../config/constants";
+import AppImageGallery from "../components/AppImageGallery";
+
+let loadImages = async (imageUrls, try_nr) => {
+  try {
+    for (let i of imageUrls) {
+      console.log(i);
+      await Image.prefetch(i);
+    }
+  } catch (error) {
+    if (try_nr < 10) {
+      loadImages(imageUrls, try_nr + 1);
+    } else {
+      console.log(error);
+    }
+  }
+  return true;
+};
 
 function ReportDetailsScreen({ route }) {
   const { data } = route.params;
 
-  console.log(data.photos[0].contentUrl);
+  const imageUrls = [];
+  for (let i of data.photos) {
+    imageUrls.push(serverUrl + i.contentUrl);
+  }
+  //Image.prefetch(imageUrls[0]);
+  try {
+    loadImages(imageUrls, 0);
+  } catch (error) {
+    console.log(error);
+  }
+
+  console.log(imageUrls);
 
   return (
     <Screen>
@@ -22,10 +51,10 @@ function ReportDetailsScreen({ route }) {
       <AppDetailsItem title="Lokalizacja">
         {data.location.description}
       </AppDetailsItem>
-      {/* {data.description && (
+      {data.description !== "" && (
         <AppDetailsItem title="Opis">{data.description}</AppDetailsItem>
-      )} */}
-      {/* <Image source={"http://127.0.0.1:8000" + data.photos[0].contentUrl} /> //TODO this is not working */}
+      )}
+      <AppImageGallery style={{ marginTop: 20 }} imageUrls={imageUrls} />
     </Screen>
   );
 }
