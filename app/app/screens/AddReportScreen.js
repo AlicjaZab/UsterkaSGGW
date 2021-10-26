@@ -3,6 +3,8 @@ import AppForm from "../components/form/AppForm";
 import * as Yup from "yup";
 import AppFormTextInput from "../components/form/AppFormTextInput";
 import { StyleSheet, View } from "react-native";
+// import * as Permissions from 'expo-permissions';
+import * as Location from "expo-location";
 
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -18,7 +20,9 @@ import mediaObjectApi from "../api/mediaObject";
 import createFormData from "../utils/createFormData";
 import { useFormikContext } from "formik";
 import AppSmallButton from "../components/AppSmallButton";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
+import { LATITUDE_DELTA, LONGITUDE_DELTA } from "../config/constants";
+import AppFormGeolocationInput from "../components/AppGeolocationInput";
 
 const validationSchema = Yup.object().shape({
   photos: Yup.array()
@@ -27,14 +31,20 @@ const validationSchema = Yup.object().shape({
     .max(5),
   category: Yup.object().nullable().required("Należy wybrać kategorię usterki"),
   description: Yup.string().label("Opis"),
-  location: Yup.string().required("Należy podać lokalizację usterki"),
+  coordinates: Yup.object().nullable(),
+  locationDescription: Yup.string().when("coordinates", {
+    is: null,
+    then: Yup.string().required("Należy podać lokalizację usterki"),
+    otherwise: Yup.string(),
+  }), //TODO here required when coordinates is required and apply coordinates values to be used
 });
 
 const initialValues = {
   photos: [],
   category: null,
   description: "",
-  location: "",
+  locationDescription: "",
+  coordinates: null,
 };
 
 const categories = [
@@ -50,6 +60,8 @@ function AddReportScreen({ navigation }) {
   //   loadReports();
   // }, []);
 
+  const [region, setRegion] = useState();
+
   const handleSubmit = (values) => {
     const photoIds = [];
     for (let i of values.photos) {
@@ -63,9 +75,9 @@ function AddReportScreen({ navigation }) {
       createDate: new Date(),
       closeDate: null,
       location: {
-        description: values.location,
-        latitude: 52.1627100327421, //TODO make those be applied by users location
-        longitude: 21.046186812386278,
+        description: values.locationDescription,
+        latitude: values.coordinates ? values.coordinates.latitude : null,
+        longitude: values.coordinates ? values.coordinates.longitude : null,
       },
       photos: photoIds,
     };
@@ -82,6 +94,23 @@ function AddReportScreen({ navigation }) {
     //return true;
     navigation.navigate("ReportDetailsScreen", { data: response.data });
   };
+
+  // const getLocation = async () => {
+  //   let { status } = await Location.requestForegroundPermissionsAsync();
+  //   if (status !== "granted") {
+  //     alert("Permission to access location was denied");
+  //     return;
+  //   }
+
+  //   let { coords } = await Location.getCurrentPositionAsync({});
+  //   console.log(coords);
+  //   setRegion({
+  //     latitude: coords.latitude,
+  //     longitude: coords.longitude,
+  //     latitudeDelta: LATITUDE_DELTA,
+  //     longitudeDelta: LONGITUDE_DELTA,
+  //   });
+  // };
 
   return (
     <Screen>
@@ -110,24 +139,17 @@ function AddReportScreen({ navigation }) {
 
         <AppFormItem
           label="Lokalizacja"
-          name="location"
+          name="locationDescription"
           required={true}
-          description="Dodaj opis lokalizacji, jeśli nie możesz podać geolokalizacji, lub możesz ją doprecyzować."
+          description="Dodaj opis miejsca, jeśli nie możesz podać geolokalizacji, lub możesz ją doprecyzować."
         >
-          <AppSmallButton label="+ Dodaj geolokalizację" />
-          {/* <View style={{ width: 500, height: 500 }}>
-            <MapView
-              initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            />
-          </View> */}
+          <AppFormGeolocationInput
+            name="coordinates"
+            buttonLabel="Udostępnij geolokalizację"
+          ></AppFormGeolocationInput>
 
           <AppFormTextInput
-            name="location"
+            name="locationDescription"
             placeholder="np. Budynek ..., sala ..."
           />
         </AppFormItem>
@@ -147,6 +169,22 @@ function AddReportScreen({ navigation }) {
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  map: {
+    width: 300,
+    height: 250,
+  },
+  mapContainer: {
+    marginVertical: 20,
+    overflow: "hidden",
+    width: 306,
+    height: 256,
+    backgroundColor: colors.secondary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 export default AddReportScreen;
 //<AppFormPicker items={categories} name="category" />

@@ -64,7 +64,7 @@ function AppFormImagePicker({ name, ...otherProps }) {
       ]);
       setCategories([...categories, response.data.category]);
     } else {
-      console.log("Something went wrong...");
+      console.log("Something went wrong..." + toString(response));
     }
     //console.log(response);
   };

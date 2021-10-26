@@ -15,7 +15,7 @@ function AppDetailsItem({ title, children }) {
       }}
     >
       <AppText style={styles.headerText2}>{title}:</AppText>
-      {children && <AppText>{children}</AppText>}
+      {children}
     </View>
   );
 }

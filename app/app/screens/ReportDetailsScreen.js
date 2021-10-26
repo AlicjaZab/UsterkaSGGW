@@ -1,6 +1,6 @@
 import React from "react";
 import Screen from "../components/Screen";
-import { Image, Text } from "react-native";
+import { View, Image, Text } from "react-native";
 import Moment from "moment";
 
 import AppDetailsItem from "../components/AppDetailsItem";
@@ -8,6 +8,7 @@ import AppText from "../components/AppText";
 import mediaObjectApi from "../api/mediaObject";
 import { serverUrl } from "../config/constants";
 import AppImageGallery from "../components/AppImageGallery";
+import AppMapWithMarker from "../components/AppMapWithMarker";
 
 let loadImages = async (imageUrls, try_nr) => {
   try {
@@ -43,18 +44,37 @@ function ReportDetailsScreen({ route }) {
 
   return (
     <Screen>
-      <AppDetailsItem title="Kategoria">{data.category}</AppDetailsItem>
-      <AppDetailsItem title="Status">{data.status}</AppDetailsItem>
-      <AppDetailsItem title="Data utworzenia">
-        {Moment(data.createDate).format("DD/MM/YYYY hh:mm")}
+      <AppDetailsItem title="Kategoria">
+        <AppText>{data.category}</AppText>
       </AppDetailsItem>
-      <AppDetailsItem title="Lokalizacja">
-        {data.location.description}
+      <AppDetailsItem title="Status">
+        <AppText>{data.status}</AppText>
+      </AppDetailsItem>
+      <AppDetailsItem title="Data utworzenia">
+        <AppText>{Moment(data.createDate).format("DD/MM/YYYY hh:mm")}</AppText>
       </AppDetailsItem>
       {data.description !== "" && (
-        <AppDetailsItem title="Opis">{data.description}</AppDetailsItem>
+        <AppDetailsItem title="Opis">
+          <AppText>{data.description}</AppText>
+        </AppDetailsItem>
       )}
-      <AppImageGallery style={{ marginTop: 20 }} imageUrls={imageUrls} />
+      <AppDetailsItem title="Lokalizacja">
+        <AppText>
+          {data.location.description !== "" && data.location.description}
+          {data.location.latitude && (
+            <View>
+              <AppMapWithMarker
+                latitude={data.location.latitude}
+                longitude={data.location.longitude}
+              />
+            </View>
+          )}
+        </AppText>
+      </AppDetailsItem>
+
+      <AppDetailsItem title="Zdjęcia">
+        <AppImageGallery style={{ marginVertical: 10 }} imageUrls={imageUrls} />
+      </AppDetailsItem>
     </Screen>
   );
 }
