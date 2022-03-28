@@ -36,7 +36,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 #[ApiResource(
     normalizationContext: ['groups' => ['report-read']],
-    denormalizationContext: ['groups' => ['report-write']]
+    denormalizationContext: ['groups' => ['report-write']],
+    order: ['createDate' => 'DESC']
     //denormalizationContext: ['groups' => ['photos']]
 )]
 class Report

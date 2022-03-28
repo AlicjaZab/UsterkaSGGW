@@ -43,12 +43,9 @@ function ReportDetailsScreen({ route }) {
   console.log(imageUrls);
 
   return (
-    <Screen>
+    <Screen style={{ marginVertical: 20 }}>
       <AppDetailsItem title="Kategoria">
         <AppText>{data.category}</AppText>
-      </AppDetailsItem>
-      <AppDetailsItem title="Status">
-        <AppText>{data.status}</AppText>
       </AppDetailsItem>
       <AppDetailsItem title="Data utworzenia">
         <AppText>{Moment(data.createDate).format("DD/MM/YYYY hh:mm")}</AppText>
@@ -74,6 +71,13 @@ function ReportDetailsScreen({ route }) {
 
       <AppDetailsItem title="Zdjęcia">
         <AppImageGallery style={{ marginVertical: 10 }} imageUrls={imageUrls} />
+      </AppDetailsItem>
+      <AppDetailsItem title="Status">
+        {/* <AppText>{data.status}</AppText> */}
+        <AppText>Nowe</AppText>
+      </AppDetailsItem>
+      <AppDetailsItem title="Przypisana osoba">
+        <AppText>Jan Kowalski</AppText>
       </AppDetailsItem>
     </Screen>
   );

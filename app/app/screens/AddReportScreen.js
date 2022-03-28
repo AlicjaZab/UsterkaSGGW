@@ -23,6 +23,7 @@ import AppSmallButton from "../components/AppSmallButton";
 import MapView, { Marker } from "react-native-maps";
 import { LATITUDE_DELTA, LONGITUDE_DELTA } from "../config/constants";
 import AppFormGeolocationInput from "../components/AppGeolocationInput";
+import { CATEGORIES } from "../config/constants";
 
 const validationSchema = Yup.object().shape({
   photos: Yup.array()
@@ -47,11 +48,11 @@ const initialValues = {
   coordinates: null,
 };
 
-const categories = [
-  { label: "Oświetlenie", value: "ligting" },
-  { label: "Hydraulika", value: "plumbing" },
-  { label: "Sprzęt elektryczny", value: "electrical-equipment" },
-];
+// const categories = [
+//   { label: "Oświetlenie", value: "ligting" },
+//   { label: "Hydraulika", value: "plumbing" },
+//   { label: "Sprzęt elektryczny", value: "electrical-equipment" },
+// ];
 
 function AddReportScreen({ navigation }) {
   // const [report, setReport] = useState([]);
@@ -134,7 +135,7 @@ function AddReportScreen({ navigation }) {
           required={true}
           description="Kategoria zostanie wybrana automatycznie na podstwie dodanych zdjęć, jednak możesz ją zmienić."
         >
-          <AppFormPicker items={categories} name="category" />
+          <AppFormPicker items={CATEGORIES} name="category" />
         </AppFormItem>
 
         <AppFormItem
