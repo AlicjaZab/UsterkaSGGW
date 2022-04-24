@@ -20,7 +20,7 @@ export const CATEGORY_TO_ICON = {
 };
 
 //Azure cognitive services constants
-export const key = "1306ad78a86a41c18ff997af89080f03";
+export const key = "*******";
 const endpointTagsPl =
   "https://westeurope.api.cognitive.microsoft.com/vision/v3.2/analyze?visualFeatures=Tags&language=pl";
 export const cognitiveServicesBaseUrl =
