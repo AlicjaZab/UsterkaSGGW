@@ -73,12 +73,6 @@ class MediaObject
     public ?string $filePath = null;
 
     /**
-     * @ORM\Column(nullable=false)
-     */
-    #[Groups(['media_object:read', 'media_object:write'])]
-    public ?string $category = null;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Report::class, inversedBy="photos")
      */
     private $report;

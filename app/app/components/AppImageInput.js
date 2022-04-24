@@ -1,16 +1,30 @@
 import React from "react";
 import colors from "../config/colors";
-import styles from "../config/styles";
 import IconButton from "./IconButton";
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
+import { Alert } from "react-native";
+import { MAX_IMAGE_COUNT } from "../config/constants";
 
-function AppImageInput({ onPress }) {
+function AppImageInput({ onPress, isMaxReached }) {
+  /**
+   * if maximum image count is not reached then loads photo from users phone,
+   * on success calls onPress method
+   */
   const selectImage = async () => {
+    if (isMaxReached()) {
+      Alert.alert(
+        "Osiągnięto limit zdjęć",
+        "Do jednego zgłoszenia można załączyć maksymalnie " +
+          MAX_IMAGE_COUNT +
+          " zdjęć. Aby dodać kolejne, usuń jedno z dodanych zdjęć."
+      );
+      return;
+    }
+
     try {
       let { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        alert("permission not granted!");
+        alert("Permission not granted!");
         return;
       }
       const result = await ImagePicker.launchImageLibraryAsync({

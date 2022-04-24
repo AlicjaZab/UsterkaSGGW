@@ -1,101 +1,127 @@
 import React, { useEffect, useState } from "react";
-import AppImageInput from "../AppImageInput";
 import { useFormikContext } from "formik";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import AppText from "../AppText";
-import ErrorMessage from "./ErrorMessage";
-import defaultStyles from "../../config/styles";
 import AppImageInputList from "../AppImageInputList";
-import mediaObjectApi from "../../api/mediaObject";
 import createFormData from "../../utils/createFormData";
+import imageProcessingApi from "../../api/imageProcessing";
 import _ from "lodash";
+import colors from "../../config/colors";
+import getCategory from "../../utils/getCategory";
 
-function AppFormImagePicker({ name, ...otherProps }) {
+function AppFormImagePicker({ name, name2, ...otherProps }) {
   const { setFieldValue, values } = useFormikContext();
   const photos = values[name];
-  //const [photos, setPhotos] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const tags = values[name2];
 
-  // const handleAdd = (image) => {
-  //   if (onAddImage) onAddImage(image);
-  //   setFieldValue(name, [...imageUris, image.uri]);
-  //   console.log(imageUris);
-  // };
-
-  // const handleRemove = (uri) => {
-  //   if (onRemoveImage) onRemoveImage(image.uri);
-  //   setFieldValue(
-  //     name,
-  //     imageUris.filter((imageUri) => imageUri !== uri)
-  //   );
-  // };
-
-  //source: https://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
-  function mode(array) {
-    if (array.length == 0) return null;
-    var modeMap = {};
-    var maxEl = array[0],
-      maxCount = 1;
-    for (var i = 0; i < array.length; i++) {
-      var el = array[i];
-      if (modeMap[el] == null) modeMap[el] = 1;
-      else modeMap[el]++;
-      if (modeMap[el] > maxCount) {
-        maxEl = el;
-        maxCount = modeMap[el];
-      }
-    }
-    return maxEl;
-  }
-
+  /**
+   * Maps image passed by user to mediaObjectImage and saves it is photos[],
+   * Retrieves tags for the image, and calls method updating list of all tags,
+   * And from the tags retrieves proper category
+   *
+   */
   const handleAdd = async (image) => {
-    const response = await mediaObjectApi.postMediaObject(
-      createFormData(image)
-    );
-    if (response.status === 201) {
-      //setPhotos([...photos, { uri: image.uri, id: response.data.id }]);
-      //updateCategory(response.data.category);
-
-      // console.log("photos: " + image);
-      // console.log("category: " + category);
-      setFieldValue(name, [
-        ...photos,
-        { id: response.data.id, uri: image.uri },
-      ]);
-      setCategories([...categories, response.data.category]);
-    } else {
-      console.log("Something went wrong..." + toString(response));
-    }
-    //console.log(response);
-  };
-
-  const handleRemove = async (uri) => {
-    //TODO delete photo from database
-    const id = _.find(photos, { uri: uri }).id;
-    const response = await mediaObjectApi.deleteMediaObject(id);
-    if (response.status === 204) {
-      setFieldValue(
-        name,
-        photos.filter((image) => image.uri !== uri)
+    const mediaObjectImage = createFormData(image);
+    setFieldValue(name, [...photos, mediaObjectImage]);
+    console.log("Attempting to get tags for an image ...");
+    const response = await imageProcessingApi.getTagsForImage(mediaObjectImage);
+    if (response.status === 200) {
+      response.data.tags.forEach(
+        (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
       );
+      addTags(response.data.tags);
     } else {
-      console.log("Something went wrong!");
+      console.log("Something went wrong..." + response);
     }
+    var category = getCategory(tags);
+    setFieldValue("category", category);
   };
 
-  useEffect(() => {
-    const maxCategory = mode(categories);
-    console.log(maxCategory);
-    setFieldValue("category", { label: maxCategory, value: maxCategory });
-  }, [categories]);
+  /**
+   * Removes image and calls tags removing method
+   *
+   */
+  const handleRemove = async (imageToDelete) => {
+    removeTags(imageToDelete._parts[0][1].uri);
+    setFieldValue(
+      name,
+      photos.filter((image) => image != imageToDelete)
+    );
+  };
+
+  /**
+   * Removes all tags which were connedcted only to given image,
+   * For other tags removes connection to removed image
+   *
+   */
+  const removeTags = (imageUri) => {
+    tags.forEach((tagObject) => {
+      tagObject.connectedPhotos = tagObject.connectedPhotos.filter(
+        (connectedPhotoObject) => connectedPhotoObject.imageUri != imageUri
+      );
+    });
+    setFieldValue(
+      name2,
+      tags.filter((tagObject) => tagObject.connectedPhotos.length != 0)
+    );
+  };
+
+  /**
+   * Adds to tags[] all retrieved tags with names that were not already there,
+   * and saves connection to the image
+   * for other tags that are repetitive creates connections to image
+   *
+   */
+  const addTags = (retrievedTags) => {
+    retrievedTags.forEach((newTagObject) => {
+      var oldTagObject = tags.find(
+        (oldTagObject) => oldTagObject.name == newTagObject.name
+      );
+      if (oldTagObject === undefined) {
+        newTagObject.connectedPhotos = [];
+        newTagObject.connectedPhotos.push({
+          imageUri: newTagObject.imageUri,
+          confidence: newTagObject.confidence,
+        });
+        delete newTagObject.imageUri;
+        tags.push(newTagObject);
+      } else {
+        oldTagObject.connectedPhotos.push({
+          imageUri: newTagObject.imageUri,
+          confidence: newTagObject.confidence,
+        });
+        oldTagObject.confidence = Math.max.apply(
+          null,
+          oldTagObject.connectedPhotos.map(
+            (connectedPhotoObject) => connectedPhotoObject.confidence
+          )
+        );
+      }
+    });
+    setFieldValue(name2, tags);
+  };
 
   return (
-    <AppImageInputList
-      imageUris={photos}
-      onAddImage={handleAdd}
-      onRemoveImage={handleRemove}
-    />
+    <View>
+      <AppImageInputList
+        images={photos}
+        onAddImage={handleAdd}
+        onRemoveImage={handleRemove}
+      />
+      {tags.length !== 0 && (
+        <AppText style={styles.tags}>
+          Wykryte tagi: {tags.map((object) => object.name + "; ")}
+        </AppText>
+      )}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tags: {
+    fontSize: 13,
+    color: colors.dark,
+  },
+});
 
 export default AppFormImagePicker;

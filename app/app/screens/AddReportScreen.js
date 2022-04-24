@@ -1,27 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import AppForm from "../components/form/AppForm";
 import * as Yup from "yup";
 import AppFormTextInput from "../components/form/AppFormTextInput";
-import { StyleSheet, View } from "react-native";
-// import * as Permissions from 'expo-permissions';
-import * as Location from "expo-location";
+import { StyleSheet } from "react-native";
 
 import Screen from "../components/Screen";
 import colors from "../config/colors";
-import AppButton from "../components/AppButton";
-import AppPicker from "../components/AppPicker";
 import AppFormPicker from "../components/form/AppFormPicker";
 import SubmitButton from "../components/form/SubmitButton";
-import AppImageInput from "../components/AppImageInput";
 import AppFormImagePicker from "../components/form/AppFormImagePicker";
 import AppFormItem from "../components/form/AppFormItem";
 import reportsApi from "../api/reports";
 import mediaObjectApi from "../api/mediaObject";
-import createFormData from "../utils/createFormData";
-import { useFormikContext } from "formik";
-import AppSmallButton from "../components/AppSmallButton";
-import MapView, { Marker } from "react-native-maps";
-import { LATITUDE_DELTA, LONGITUDE_DELTA } from "../config/constants";
+
+import {
+  LATITUDE_DELTA,
+  LONGITUDE_DELTA,
+  MAX_IMAGE_COUNT,
+} from "../config/constants";
 import AppFormGeolocationInput from "../components/AppGeolocationInput";
 import { CATEGORIES } from "../config/constants";
 
@@ -29,7 +25,7 @@ const validationSchema = Yup.object().shape({
   photos: Yup.array()
     .required()
     .min(1, "Należy dodać przynajmniej jedno zdjęcie")
-    .max(5),
+    .max(MAX_IMAGE_COUNT),
   category: Yup.object().nullable().required("Należy wybrać kategorię usterki"),
   description: Yup.string().label("Opis"),
   coordinates: Yup.object().nullable(),
@@ -37,7 +33,7 @@ const validationSchema = Yup.object().shape({
     is: null,
     then: Yup.string().required("Należy podać lokalizację usterki"),
     otherwise: Yup.string(),
-  }), //TODO here required when coordinates is required and apply coordinates values to be used
+  }),
 });
 
 const initialValues = {
@@ -46,29 +42,26 @@ const initialValues = {
   description: "",
   locationDescription: "",
   coordinates: null,
+  tags: [],
 };
 
-// const categories = [
-//   { label: "Oświetlenie", value: "ligting" },
-//   { label: "Hydraulika", value: "plumbing" },
-//   { label: "Sprzęt elektryczny", value: "electrical-equipment" },
-// ];
-
 function AddReportScreen({ navigation }) {
-  // const [report, setReport] = useState([]);
-
-  // sendReport(() => {
-  //   loadReports();
-  // }, []);
-
-  const [region, setRegion] = useState();
-
-  const handleSubmit = (values) => {
+  /**
+   *
+   * Firstly sends photos and receives it's ids
+   * then creates report data out of values from form, together with photos ids,
+   * and sends report data to server
+   */
+  const handleSubmit = async (values) => {
     const photoIds = [];
-    for (let i of values.photos) {
-      photoIds.push("/api/media_objects/" + i.id);
+    for (let photo of values.photos) {
+      const response = await mediaObjectApi.postMediaObject(photo);
+      if (response.status === 201) {
+        photoIds.push("/api/media_objects/" + response.data.id);
+      } else {
+        console.log(response);
+      }
     }
-    console.log(values);
     const report = {
       category: values.category.label,
       description: values.description,
@@ -82,36 +75,14 @@ function AddReportScreen({ navigation }) {
       },
       photos: photoIds,
     };
-    console.log(report);
     sendReport(report);
   };
 
   const sendReport = async (report) => {
     const response = await reportsApi.postReport(report);
-    //const response = await reportsApi.getReportsList();
-    console.log(response);
-    //setReports(response.data);
-    //or redirect to appropriate screen, display appropriate error message
-    //return true;
+    if (response.status != 201) console.log(response);
     navigation.navigate("ReportDetailsScreen", { data: response.data });
   };
-
-  // const getLocation = async () => {
-  //   let { status } = await Location.requestForegroundPermissionsAsync();
-  //   if (status !== "granted") {
-  //     alert("Permission to access location was denied");
-  //     return;
-  //   }
-
-  //   let { coords } = await Location.getCurrentPositionAsync({});
-  //   console.log(coords);
-  //   setRegion({
-  //     latitude: coords.latitude,
-  //     longitude: coords.longitude,
-  //     latitudeDelta: LATITUDE_DELTA,
-  //     longitudeDelta: LONGITUDE_DELTA,
-  //   });
-  // };
 
   return (
     <Screen>
@@ -126,7 +97,12 @@ function AddReportScreen({ navigation }) {
           required={true}
           style={{ marginTop: 20 }}
         >
-          <AppFormImagePicker label="Zdjęcia" name="photos" required={true} />
+          <AppFormImagePicker
+            label="Zdjęcia"
+            name="photos"
+            name2="tags"
+            required={true}
+          />
         </AppFormItem>
 
         <AppFormItem
@@ -188,4 +164,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddReportScreen;
-//<AppFormPicker items={categories} name="category" />

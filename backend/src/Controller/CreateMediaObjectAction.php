@@ -20,7 +20,6 @@ final class CreateMediaObjectAction extends AbstractController
 
         $mediaObject = new MediaObject();
         $mediaObject->file = $uploadedFile;
-        $mediaObject->category="Hydraulika"; //TODO category 
 
         return $mediaObject;
     }

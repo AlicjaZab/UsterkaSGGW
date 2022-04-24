@@ -2,8 +2,9 @@ import React, { useRef } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import AppImageDeletableMinature from "./AppImageDeletableMinature";
 import AppImageInput from "./AppImageInput";
+import { MAX_IMAGE_COUNT } from "../config/constants";
 
-function AppImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
+function AppImageInputList({ images = [], onRemoveImage, onAddImage }) {
   const scrollView = useRef();
 
   return (
@@ -14,15 +15,18 @@ function AppImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
         <View style={styles.container}>
-          {imageUris.map((image) => (
-            <View key={image.uri} style={styles.image}>
+          {images.map((image) => (
+            <View key={image._parts[0][1].uri} style={styles.image}>
               <AppImageDeletableMinature
-                imageUri={image.uri}
-                onRemove={() => onRemoveImage(image.uri)}
+                imageUri={image._parts[0][1].uri}
+                onRemove={() => onRemoveImage(image)}
               />
             </View>
           ))}
-          <AppImageInput onPress={(image) => onAddImage(image)} />
+          <AppImageInput
+            onPress={(image) => onAddImage(image)}
+            isMaxReached={() => images.length == MAX_IMAGE_COUNT}
+          />
         </View>
       </ScrollView>
     </View>
