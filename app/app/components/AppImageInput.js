@@ -2,7 +2,6 @@ import React from "react";
 import colors from "../config/colors";
 import IconButton from "./IconButton";
 import * as ImagePicker from "expo-image-picker";
-//import * as ImagePicker from "react-native-image-picker";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Alert } from "react-native";
 import {

@@ -86,8 +86,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   closeButton: {
-    //position: "absolute",
-    //right: 5,
     alignSelf: "flex-end",
   },
 });

@@ -9,6 +9,8 @@ import ReportsListScreen from "../screens/ReportsListScreen";
 import colors from "../config/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
+import AppText from "../components/AppText";
+import Icon from "../components/Icon";
 
 const Stack = createStackNavigator();
 
@@ -42,8 +44,29 @@ const MainNavigator = () => (
     <Stack.Screen
       name="ReportDetailsScreen"
       component={ReportDetailsScreen}
-      options={({ route }) => ({
+      options={({ route, navigation }) => ({
         title: "Zgłoszenie nr " + route.params.data.id,
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ReportsListScreen)}
+            style={{ flexDirection: "row", alignItems: "center" }}
+          >
+            <Icon
+              name="chevron-left"
+              backgroundColor={colors.primary}
+              size={55}
+            ></Icon>
+            <AppText
+              style={{
+                fontSize: 17,
+                color: colors.white,
+                width: 100,
+              }}
+            >
+              Lista zgłoszeń
+            </AppText>
+          </TouchableOpacity>
+        ),
       })}
     />
     <Stack.Screen

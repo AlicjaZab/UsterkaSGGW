@@ -42,8 +42,8 @@ function ReportDetailsScreen({ route }) {
   }
 
   console.log(imageUrls);
-  console.log(data.category);
-  console.log(getLabelByValue(data.category));
+  console.log("data");
+  console.log(data);
 
   return (
     <Screen style={{ marginVertical: 20 }}>
@@ -75,8 +75,12 @@ function ReportDetailsScreen({ route }) {
       <AppDetailsItem title="Zdjęcia">
         <AppImageGallery style={{ marginVertical: 10 }} imageUrls={imageUrls} />
       </AppDetailsItem>
-      <AppDetailsItem title="Przypisana osoba">
-        <AppText>Jan Kowalski</AppText>
+      <AppDetailsItem title="Powiadomione osoby">
+        {data.notifiedPeople.map((person) => (
+          <AppText key={person.surname}>
+            {person.name} {person.surname}
+          </AppText>
+        ))}
       </AppDetailsItem>
     </Screen>
   );

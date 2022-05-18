@@ -15,9 +15,9 @@ export const CATEGORIES = {
 };
 
 export const CATEGORY_TO_ICON = {
-  Oświetlenie: "lightbulb-on",
-  Hydraulika: "water-pump",
-  Elektronika: "desktop-classic",
+  Lighting: "lightbulb-on",
+  Plumbing: "water-pump",
+  Electricity: "desktop-classic",
   kanalizacja: "water-pump",
 };
 

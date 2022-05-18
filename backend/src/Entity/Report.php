@@ -103,6 +103,7 @@ class Report
 
     /**
      * @ORM\ManyToMany(targetEntity=StaffPerson::class, inversedBy="reports")
+     * @Groups({"report-write", "report-read"})
      */
     private $notifiedPeople;
     

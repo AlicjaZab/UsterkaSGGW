@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, ActivityIndicator } from "react-native";
 import reportsApi from "../api/reports";
 import ReportListItem from "../components/ReportListItem";
 import AppButton from "../components/AppButton";
@@ -10,6 +10,7 @@ import IconButton from "../components/IconButton";
 
 function ReportsListScreen({ navigation }) {
   const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadReports();
@@ -29,7 +30,9 @@ function ReportsListScreen({ navigation }) {
   }, [navigation]);
 
   const loadReports = async () => {
+    setLoading(true);
     const response = await reportsApi.getReportsList();
+    setLoading(false);
     setReports(response.data);
   };
 
@@ -41,7 +44,15 @@ function ReportsListScreen({ navigation }) {
         onPress={() => navigation.navigate("AddReportScreen")}
         icon="plus"
       ></AppButton>
-
+      {loading == true && (
+        <View style={{ paddingBottom: 20 }}>
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color={colors.secondary}
+          ></ActivityIndicator>
+        </View>
+      )}
       <FlatList
         data={reports}
         keyExtractor={(report) => report.id.toString()}
