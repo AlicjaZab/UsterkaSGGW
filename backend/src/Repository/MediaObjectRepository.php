@@ -36,6 +36,18 @@ class MediaObjectRepository extends ServiceEntityRepository
     }
     */
 
+     
+    public function findById($id): ?MediaObject
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
+
     /*
     public function findOneBySomeField($value): ?MediaObject
     {

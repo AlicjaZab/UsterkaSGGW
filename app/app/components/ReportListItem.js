@@ -7,6 +7,7 @@ import colors from "../config/colors";
 import Icon from "./Icon";
 import { CATEGORY_TO_ICON } from "../config/constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getLabelByValue } from "../utils/getCategory";
 //could be also image - icon representing category
 const ReportListItem = ({ navigation, reportData }) => {
   const onPress = () => {
@@ -21,7 +22,9 @@ const ReportListItem = ({ navigation, reportData }) => {
         />
         <View>
           <AppText style={styles.reportId}>Zgłoszenie {reportData.id}</AppText>
-          <AppText style={styles.category}>{reportData.category}</AppText>
+          <AppText style={styles.category}>
+            {getLabelByValue(reportData.category)}
+          </AppText>
           <AppText style={styles.date}>
             {Moment(reportData.createDate).format("DD/MM/YYYY hh:mm")}
           </AppText>

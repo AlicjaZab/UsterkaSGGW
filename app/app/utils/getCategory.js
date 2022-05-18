@@ -6,20 +6,23 @@ const getCategory = (tags) => {
     tags
       .map((tagObject) => tagObject.name)
       .find((tag) => {
-        console.log(tag);
-        console.log(tagToCategory[tag]);
         if (tagToCategory[tag] != undefined) {
-          console.log("FOUND!");
           return true;
         }
       })
   ];
 };
 
+export const getLabelByValue = (value) => {
+  return Object.values(CATEGORIES).find((category) => category.value == value)
+    .label;
+};
+
 // TODO fill this list
 const tagToCategory = {
   light: CATEGORIES.lighting,
   lamp: CATEGORIES.lighting,
+  bathroom: CATEGORIES.plumbing,
 };
 
 export default getCategory;

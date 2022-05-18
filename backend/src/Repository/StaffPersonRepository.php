@@ -19,6 +19,24 @@ class StaffPersonRepository extends ServiceEntityRepository
         parent::__construct($registry, StaffPerson::class);
     }
 
+    /**
+     * @return StaffPerson[] Returns an array of people assigned to specified category
+     */
+    
+    public function findByCategory($category)
+    {
+        return $this->createQueryBuilder('s')
+        ->andWhere(':category MEMBER OF s.categories')
+            ->setParameter('category', $category)
+            ->orderBy('s.surname', 'ASC')
+            ->orderBy('s.name', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+
     // /**
     //  * @return StaffPerson[] Returns an array of StaffPerson objects
     //  */

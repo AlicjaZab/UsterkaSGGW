@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\ReportController;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,8 +38,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['report-read']],
     denormalizationContext: ['groups' => ['report-write']],
-    order: ['createDate' => 'DESC']
-    //denormalizationContext: ['groups' => ['photos']]
+    order: ['createDate' => 'DESC'],
+    itemOperations: ['get', 'delete'],
+    collectionOperations: [
+        'get',
+        'post' => [
+            'controller' => ReportController::class,
+            'deserialize' => false,
+            'validation_groups' => ['Default', 'report_create'],
+        ],
+    ]
 )]
 class Report
 {
@@ -93,14 +102,15 @@ class Report
     private $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity=StaffPerson::class)
-     * @Groups({"report-read"})
+     * @ORM\ManyToMany(targetEntity=StaffPerson::class, inversedBy="reports")
      */
-    private $assignedPerson;
+    private $notifiedPeople;
+    
 
     public function __construct()
     {
         $this->photos = new ArrayCollection();
+        $this->notifiedPeople = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,14 +225,26 @@ class Report
         return $this;
     }
 
-    public function getAssignedPerson(): ?StaffPerson
+    /**
+     * @return Collection|StaffPerson[]
+     */
+    public function getNotifiedPeople(): Collection
     {
-        return $this->assignedPerson;
+        return $this->notifiedPeople;
     }
 
-    public function setAssignedPerson(?StaffPerson $assignedPerson): self
+    public function addNotifiedPerson(StaffPerson $notifiedPerson): self
     {
-        $this->assignedPerson = $assignedPerson;
+        if (!$this->notifiedPeople->contains($notifiedPerson)) {
+            $this->notifiedPeople[] = $notifiedPerson;
+        }
+
+        return $this;
+    }
+
+    public function removeNotifiedPerson(StaffPerson $notifiedPerson): self
+    {
+        $this->notifiedPeople->removeElement($notifiedPerson);
 
         return $this;
     }

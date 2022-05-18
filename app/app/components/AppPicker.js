@@ -25,7 +25,6 @@ function AppPicker({
   width = "100%",
 }) {
   const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
@@ -55,7 +54,7 @@ function AppPicker({
               onPress={() => setModalVisible(false)}
             />
             <FlatList
-              data={items}
+              data={Object.values(items)}
               keyExtractor={(item) => item.value.toString()}
               renderItem={({ item }) => (
                 <PickerItem

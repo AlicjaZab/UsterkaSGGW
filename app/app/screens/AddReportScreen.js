@@ -63,7 +63,7 @@ function AddReportScreen({ navigation }) {
       }
     }
     const report = {
-      category: values.category.label,
+      category: values.category.value,
       description: values.description,
       status: "new",
       createDate: new Date(),

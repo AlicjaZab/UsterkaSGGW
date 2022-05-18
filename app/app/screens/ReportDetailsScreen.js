@@ -9,6 +9,7 @@ import mediaObjectApi from "../api/mediaObject";
 import { serverUrl } from "../config/constants";
 import AppImageGallery from "../components/AppImageGallery";
 import AppMapWithMarker from "../components/AppMapWithMarker";
+import { getLabelByValue } from "../utils/getCategory";
 
 let loadImages = async (imageUrls, try_nr) => {
   try {
@@ -41,11 +42,13 @@ function ReportDetailsScreen({ route }) {
   }
 
   console.log(imageUrls);
+  console.log(data.category);
+  console.log(getLabelByValue(data.category));
 
   return (
     <Screen style={{ marginVertical: 20 }}>
       <AppDetailsItem title="Kategoria">
-        <AppText>{data.category}</AppText>
+        <AppText>{getLabelByValue(data.category)}</AppText>
       </AppDetailsItem>
       <AppDetailsItem title="Data utworzenia">
         <AppText>{Moment(data.createDate).format("DD/MM/YYYY hh:mm")}</AppText>
@@ -71,10 +74,6 @@ function ReportDetailsScreen({ route }) {
 
       <AppDetailsItem title="Zdjęcia">
         <AppImageGallery style={{ marginVertical: 10 }} imageUrls={imageUrls} />
-      </AppDetailsItem>
-      <AppDetailsItem title="Status">
-        {/* <AppText>{data.status}</AppText> */}
-        <AppText>Nowe</AppText>
       </AppDetailsItem>
       <AppDetailsItem title="Przypisana osoba">
         <AppText>Jan Kowalski</AppText>

@@ -2378,6 +2378,13 @@ component-emitter@^1.2.1:
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
   integrity sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==
 
+compress.js@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/compress.js/-/compress.js-1.2.2.tgz#96c311d70b4dae991001c73de96a1869499b79d8"
+  integrity sha512-eIsMmzyBtPVDdPtpmPXTRB6uiLjgTXygYl0KCVVp0I/U/++YzZtEkhVTuWH97dzTxKvzAcZMFwYUHGC09BSUqg==
+  dependencies:
+    regenerator-runtime "^0.13.9"
+
 compressible@~2.0.16:
   version "2.0.18"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.18.tgz#af53cca6b070d4c3c0750fbd77286a6d7cc46fba"
@@ -2801,6 +2808,13 @@ expo-font@~9.2.1:
   dependencies:
     expo-modules-core "~0.2.0"
     fontfaceobserver "^2.1.0"
+
+expo-image-manipulator@~9.2.2:
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/expo-image-manipulator/-/expo-image-manipulator-9.2.2.tgz#0fc7d2032972961c0a5fb49511d230fe0788fa6f"
+  integrity sha512-rnwUpLmySEhclES+632/vl4cBQyjWE16PdR003WxvN/YBynTlYIi7If2FZRFt5lktX0Rz988XVE89EavHPn2ug==
+  dependencies:
+    expo-modules-core "~0.2.0"
 
 expo-image-picker@~10.2.2:
   version "10.2.3"
@@ -4948,6 +4962,11 @@ react-native-gesture-handler@~1.10.2:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-image-picker@^4.8.1:
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-4.8.1.tgz#06f92ce418b7bffd25d19ce4c195438568c1e373"
+  integrity sha512-xm897VVjbApXDuW7s2Rmb4jU4epz2BitY4Owgeqf2mEkgb07+VJgN9hdOFNc3yAOeof1lO9n9r0xlCDDWyhX9Q==
+
 react-native-maps@0.28.0:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.28.0.tgz#1913dd4977652ddfc317d39c7cb7d78a8e513784"
@@ -5068,7 +5087,7 @@ regenerate@^1.4.2:
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
   integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
 
-regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.4:
+regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.9:
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==

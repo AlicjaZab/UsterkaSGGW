@@ -42,9 +42,15 @@ class StaffPerson
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Report::class, mappedBy="notifiedPeople")
+     */
+    private $reports;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,4 +117,31 @@ class StaffPerson
 
         return $this;
     }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    // public function addReport(Report $report): self
+    // {
+    //     if (!$this->reports->contains($report)) {
+    //         $this->reports[] = $report;
+    //         $report->addNotifiedPerson($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeReport(Report $report): self
+    // {
+    //     if ($this->reports->removeElement($report)) {
+    //         $report->removeNotifiedPerson($this);
+    //     }
+
+    //     return $this;
+    // }
 }

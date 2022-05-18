@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "app",
+    "name": "Usterka SGGW",
     "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,16 +13,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#fc7600"
       }
     },
     "web": {

@@ -24,15 +24,17 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
     const mediaObjectImage = createFormData(image);
     setFieldValue(name, [...photos, mediaObjectImage]);
     console.log("Attempting to get tags for an image ...");
-    const response = await imageProcessingApi.getTagsForImage(mediaObjectImage);
-    if (response.status === 200) {
-      response.data.tags.forEach(
-        (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
-      );
-      addTags(response.data.tags);
-    } else {
-      console.log("Something went wrong..." + response);
-    }
+    //UNCOMMENT TO GET TAGS FROM AZURE
+    // const response = await imageProcessingApi.getTagsForImage(mediaObjectImage);
+    // if (response.status === 200) {
+    //   response.data.tags.forEach(
+    //     (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
+    //   );
+    //   addTags(response.data.tags);
+    // } else {
+    //   console.log("Something went wrong...");
+    //   console.log(response);
+    // }
     var category = getCategory(tags);
     setFieldValue("category", category);
   };
