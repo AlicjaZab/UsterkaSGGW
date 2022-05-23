@@ -78,7 +78,12 @@ final class ReportController extends AbstractController
             $photo = $this->mediaObjectRepository->findById($photoId);
             $report->addPhoto($photo);
         }
-        $this->emailSendingService->send($report);
+        try{
+            $this->emailSendingService->send($report);
+        } catch  (Exception $e) {
+            print($e);
+        }
+        
         
         return $report;
     }

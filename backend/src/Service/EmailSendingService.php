@@ -43,8 +43,12 @@ final class EmailSendingService
                 $email
                     ->embed(fopen($photo_path, 'r'), $filename);
             }
-    
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch( Exception $e) {
+                print($e);
+            }
+           
         }
         
     }

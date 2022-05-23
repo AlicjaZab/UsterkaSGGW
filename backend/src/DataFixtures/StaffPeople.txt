@@ -1,3 +1,8 @@
 Jan Kowalski usterka.sggw@gmail.com Lighting
 Piotr Głowacki usterka.sggw@gmail.com Plumbing
-Krzysztof Kwiatkowski usterka.sggw@gmail.com Lighting Plumbing Electricity
+Krzysztof Kwiatkowski usterka.sggw@gmail.com Lighting Plumbing Electrical_equipment
+Leszek Wojciechowski usterka.sggw@gmail.com Furnishings
+Damian Damianowski usterka.sggw@gmail.com Electrical_system
+Wojciech Tomaszek usterka.sggw@gmail.com Construction_repairs
+Wiesław Dyszka usterka.sggw@gmail.com Untidiness
+Dominik Wiedelek usterka.sggw@gmail.com Doors_and_windows
