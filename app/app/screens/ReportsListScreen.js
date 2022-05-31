@@ -22,7 +22,7 @@ function ReportsListScreen({ navigation }) {
         <IconButton
           onPress={loadReports}
           name="refresh"
-          backgroundColor={colors.primary}
+          backgroundColor={"transparent"}
           size={55}
         />
       ),

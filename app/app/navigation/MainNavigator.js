@@ -6,6 +6,7 @@ import AddReportScreen from "../screens/AddReportScreen";
 import StartupScreen from "../screens/StartupScreen";
 import ReportDetailsScreen from "../screens/ReportDetailsScreen";
 import ReportsListScreen from "../screens/ReportsListScreen";
+import ErrorReportNotCreatedScreen from "../screens/ErrorReportNotCreatedScreen";
 import colors from "../config/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
@@ -53,7 +54,35 @@ const MainNavigator = () => (
           >
             <Icon
               name="chevron-left"
-              backgroundColor={colors.primary}
+              backgroundColor={"transparent"}
+              size={55}
+            ></Icon>
+            <AppText
+              style={{
+                fontSize: 17,
+                color: colors.white,
+                width: 100,
+              }}
+            >
+              Lista zgłoszeń
+            </AppText>
+          </TouchableOpacity>
+        ),
+      })}
+    />
+    <Stack.Screen
+      name="ErrorReportNotCreatedScreen"
+      component={ErrorReportNotCreatedScreen}
+      options={({ route, navigation }) => ({
+        title: "",
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ReportsListScreen)}
+            style={{ flexDirection: "row", alignItems: "center" }}
+          >
+            <Icon
+              name="chevron-left"
+              backgroundColor={"transparent"}
               size={55}
             ></Icon>
             <AppText

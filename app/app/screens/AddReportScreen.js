@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppForm from "../components/form/AppForm";
 import * as Yup from "yup";
 import AppFormTextInput from "../components/form/AppFormTextInput";
@@ -30,13 +30,17 @@ const validationSchema = Yup.object().shape({
     .min(1, "Należy dodać przynajmniej jedno zdjęcie")
     .max(MAX_IMAGE_COUNT),
   category: Yup.object().nullable().required("Należy wybrać kategorię usterki"),
-  description: Yup.string().label("Opis"),
+  description: Yup.string()
+    .label("Opis")
+    .max(200, "Opis nie powinien przekraczać 200 znaków"),
   coordinates: Yup.object().nullable(),
-  locationDescription: Yup.string().when("coordinates", {
-    is: null,
-    then: Yup.string().required("Należy podać lokalizację usterki"),
-    otherwise: Yup.string(),
-  }),
+  locationDescription: Yup.string()
+    .max(200, "Opis lokalizacji nie powinien przekraczać 200 znaków")
+    .when("coordinates", {
+      is: null,
+      then: Yup.string().required("Należy podać lokalizację usterki"),
+      otherwise: Yup.string(),
+    }),
 });
 
 const initialValues = {
@@ -50,6 +54,7 @@ const initialValues = {
 
 function AddReportScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
+
   /**
    * Asks user if he wants to cancel adding report, and navigates to reports list
    */
@@ -130,8 +135,12 @@ function AddReportScreen({ navigation }) {
   const sendReport = async (report) => {
     const response = await reportsApi.postReport(report);
     setLoading(false);
-    if (response.status != 201) console.log(response);
-    navigation.navigate("ReportDetailsScreen", { data: response.data });
+    if (response.status != 201) {
+      console.log(response);
+      navigation.navigate("ErrorReportNotCreatedScreen", { data: response });
+    } else {
+      navigation.navigate("ReportDetailsScreen", { data: response.data });
+    }
   };
 
   return (

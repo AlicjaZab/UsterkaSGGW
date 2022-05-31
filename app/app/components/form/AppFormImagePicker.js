@@ -14,6 +14,12 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
   const photos = values[name];
   const tags = values[name2];
 
+  useEffect(() => {
+    if (photos.length == 0) {
+      setFieldValue(name2, []);
+    }
+  }, []);
+
   /**
    * Maps image passed by user to mediaObjectImage and saves it is photos[],
    * Retrieves tags for the image, and calls method updating list of all tags,
