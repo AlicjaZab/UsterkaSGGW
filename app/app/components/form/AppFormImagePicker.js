@@ -33,6 +33,12 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
     //UNCOMMENT TO GET TAGS FROM AZURE
     const response = await imageProcessingApi.getTagsForImage(mediaObjectImage);
     if (response.status === 200) {
+      console.log(response);
+      console.log(
+        response.data.tags.map(
+          (object) => object.name + " (" + object.confidence + ");"
+        )
+      );
       response.data.tags.forEach(
         (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
       );
@@ -41,7 +47,11 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
       console.log("Something went wrong...");
       console.log(response);
     }
-    var category = getCategory(tags);
+    updateCategory(tags);
+  };
+
+  const updateCategory = (updatedTags) => {
+    var category = getCategory(updatedTags);
     setFieldValue("category", category);
   };
 
@@ -50,11 +60,12 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
    *
    */
   const handleRemove = async (imageToDelete) => {
-    removeTags(imageToDelete._parts[0][1].uri);
+    let updatedTags = removeTags(imageToDelete._parts[0][1].uri);
     setFieldValue(
       name,
       photos.filter((image) => image != imageToDelete)
     );
+    updateCategory(updatedTags);
   };
 
   /**
@@ -68,10 +79,11 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
         (connectedPhotoObject) => connectedPhotoObject.imageUri != imageUri
       );
     });
-    setFieldValue(
-      name2,
-      tags.filter((tagObject) => tagObject.connectedPhotos.length != 0)
+    let filteredTags = tags.filter(
+      (tagObject) => tagObject.connectedPhotos.length != 0
     );
+    setFieldValue(name2, filteredTags);
+    return filteredTags;
   };
 
   /**

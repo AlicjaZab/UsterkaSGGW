@@ -42,11 +42,9 @@ export const CATEGORY_TO_TAGS = {
     "lantern",
   ],
   plumbing: [
-    "bathroom",
     "toilet",
     "toliet seat",
     "bidet",
-    "bathroom accessory",
     "urinal",
     "tap",
     "faucet",
@@ -60,6 +58,7 @@ export const CATEGORY_TO_TAGS = {
     "plumbing",
     "drain",
     "plumbing fixture",
+    "drinker",
   ],
   electrical_equipment: [
     "projector",
@@ -67,7 +66,6 @@ export const CATEGORY_TO_TAGS = {
     "keyboard",
     "mouse",
     "computer mouse",
-    "cable",
     "wire",
     "vending machine",
     "espresso machine",
@@ -93,15 +91,18 @@ export const CATEGORY_TO_TAGS = {
     "machine",
     "camera",
     "refrigerator",
+    "hand dryer",
   ],
   furnishings: [
     "chair",
     "swivel chair",
     "office chair",
     "whiteboard",
+    "blackboard",
     "table",
     "desk",
     "bench",
+    "outdoor bench",
     "backrest",
     "cabinet",
     "closet",
@@ -109,13 +110,13 @@ export const CATEGORY_TO_TAGS = {
     "shelf",
     "furniture",
     "mirror",
-    "drinker",
     "waste container",
-    "street furniture",
+    "furniture",
     "seat",
     "bin",
     "recycle bin",
     "armchair",
+    "exercise equipment",
   ],
   electrical_system: [
     "electrical box",
@@ -123,31 +124,28 @@ export const CATEGORY_TO_TAGS = {
     "power socket",
     "light switch",
     "switch",
+    "cable",
     "cables",
     "wires",
+    "elevator",
+    "power plugs and sockets",
   ],
   construction_repairs: [
     "hole in the wall",
-    "wall",
-    "ceiling",
     "crack",
     "leak",
-    "brick",
     "drywall",
     "plaster",
-    "floor",
     "tile",
     "plaster",
     "vent",
-    "elevator",
     "pole",
     "manhole",
-    "sidewalk",
-    "concrete",
-    "curb",
+    "barricade",
   ],
   untidiness: [
     "dirt",
+    "dirty",
     "puddle",
     "fudge",
     "stain",
@@ -159,6 +157,7 @@ export const CATEGORY_TO_TAGS = {
     "mud",
     "fecal matter",
     "litter",
+    "waste container",
   ],
   doors_and_windows: [
     "door",
@@ -169,6 +168,9 @@ export const CATEGORY_TO_TAGS = {
     "windshield",
     "hinge",
     "latch",
+    "doorframe",
+    "frame",
+    "hinges",
   ],
   supplies: [
     "toilet paper",
@@ -180,7 +182,23 @@ export const CATEGORY_TO_TAGS = {
     "disinfectant",
     "paper towel",
     "bathroom accessory",
+    "soap dispenser",
+    "dispenser",
+    "tiolet roll holder",
   ],
+};
+
+export const CATEGORY_TO_TAGS_TO_CHECK_LAST = {
+  construction_repairs: [
+    "brick",
+    "wall",
+    "floor",
+    "ceiling",
+    "sidewalk",
+    "concrete",
+    "curb",
+  ],
+  plumbing: ["bathroom", "bathroom accessory"],
 };
 
 export const CATEGORY_TO_ICON = {
@@ -197,8 +215,6 @@ export const CATEGORY_TO_ICON = {
 
 //Azure cognitive services constants
 export const key = "1306ad78a86a41c18ff997af89080f03";
-const endpointTagsPl =
-  "https://westeurope.api.cognitive.microsoft.com/vision/v3.2/analyze?visualFeatures=Tags&language=pl";
 export const cognitiveServicesBaseUrl =
-  "https://westeurope.api.cognitive.microsoft.com/vision/v3.2";
+  "https://image-recognition-project.cognitiveservices.azure.com/vision/v3.2";
 export const endpointTagsEn = "/analyze?visualFeatures=Tags";
