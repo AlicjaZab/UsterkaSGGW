@@ -1,44 +1,165 @@
-import {
-  CATEGORIES,
-  CATEGORY_TO_TAGS,
-  CATEGORY_TO_TAGS_TO_CHECK_LAST,
-} from "../config/constants";
+import { CATEGORIES } from "../config/constants";
 import _ from "lodash";
 
-// TODO make it find the best tag that could be mapped to category
+import {
+  CATEGORY_TO_TAGS,
+  CATEGORY_TO_TAGS_TO_CHECK_LAST,
+  CATEGORY_TO_TAGS_FULL,
+} from "./categoryMappings";
+
+// Change this constant to specify categorization dependent on tags strategy
+// Works only with enabled tagging with Azure or Google
+// Recommended option 3
+//option 1            /option 2                         /option 3
+//biggestAmountOfTaggs/containsTagWithGreatestConfidence/containsTagWithGreatestConfidenceWithSecondTable
+const CATEGORIZATION_STRATEGY =
+  "containsTagWithGreatestConfidenceWithSecondTable";
+
+// --- START of code that can be removed this after analysis ----
+// this piece of code was written to check which of implemented strategies is the best for given data sets
+
+// only one thould be uncommented, to test proper data
+import { photos } from "./photosWithTagsGoogle";
+//import { photos } from "./photosWithTagsAzure";
+
+export const printCategoriesForPhotosWithTags = () => {
+  let photosWithTags = [];
+  for (let i = 0; i < photos.length; i++) {
+    photosWithTags[i] = {};
+    photosWithTags[i].title = photos[i].title;
+    photosWithTags[i].tags = photos[i].tags;
+  }
+  photosWithTags.forEach((object) => {
+    let tags = object.tags.replace('""', "");
+    tags = tags.replace(/(\r\n|\n|\r)/gm, "");
+    tags = tags.replace(/,/g, "");
+    tags = tags.replace(/\)/g, "");
+    tags = tags.replace(/Score: /g, "");
+    tags = tags.replace(/Topicality: /g, "");
+    tags = tags.split(";");
+    let x = tags.map((tag) => {
+      let elements = tag.split("(");
+      let y = {};
+      y.name = elements[0].trim();
+      y.confidence = elements[1].split(" ")[0];
+      return y;
+    });
+    object.tags = x;
+  });
+  photosWithTags.forEach((object) => {
+    getCategory(object.tags);
+  });
+};
+// --- END of code that can be removed this after analysis ----
+
 const getCategory = (tags) => {
-  let highestTagsAmount = 0;
-  let bestCategory = "";
-  for (var category of Object.keys(CATEGORY_TO_TAGS)) {
-    var categoryScore = 0;
-    for (let tag of tags) {
-      if (CATEGORY_TO_TAGS[category].includes(tag.name)) {
-        categoryScore++;
+  if (CATEGORIZATION_STRATEGY == "biggestAmountOfTaggs") {
+    let highestTagsAmount = 0;
+    let bestCategory = "";
+    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
+      var categoryScore = 0;
+      for (let tag of tags) {
+        if (CATEGORY_TO_TAGS[category].includes(tag.name.toLowerCase())) {
+          categoryScore++;
+        }
+      }
+      if (categoryScore > highestTagsAmount) {
+        bestCategory = category;
+        highestTagsAmount = categoryScore;
       }
     }
-    if (categoryScore > highestTagsAmount) {
-      bestCategory = category;
-      highestTagsAmount = categoryScore;
+
+    if (bestCategory === "") {
+      bestCategory = getCategoryByLastToCheckTags(tags);
     }
-  }
 
-  if (bestCategory === "") {
-    bestCategory = getCategoryByLastToCheckTags(tags);
-  }
+    console.log(bestCategory);
+    if (bestCategory == "") console.log("NONE");
+    return CATEGORIES[bestCategory];
+    //
+    //__________________________________________________________________________
+  } else if (CATEGORIZATION_STRATEGY == "containsTagWithGreatestConfidence") {
+    var categoriesWithConfidences = {};
+    for (var category of Object.keys(CATEGORY_TO_TAGS_FULL)) {
+      categoriesWithConfidences[category] = 0;
+    }
 
-  console.log("Best category: ");
-  console.log(bestCategory);
-  return CATEGORIES[bestCategory];
+    for (var category of Object.keys(CATEGORY_TO_TAGS_FULL)) {
+      for (let tag of tags) {
+        if (
+          CATEGORY_TO_TAGS_FULL[category].includes(tag.name.toLowerCase()) &&
+          tag.confidence > categoriesWithConfidences[category]
+        ) {
+          categoriesWithConfidences[category] = tag.confidence;
+        }
+      }
+    }
+
+    let bestCategory = "";
+    let bestConfidence = 0;
+
+    for (var category of Object.keys(CATEGORY_TO_TAGS_FULL)) {
+      if (categoriesWithConfidences[category] > bestConfidence) {
+        bestConfidence = categoriesWithConfidences[category];
+        bestCategory = category;
+      }
+    }
+    console.log(bestCategory);
+    if (bestCategory == "") console.log("NONE");
+    return CATEGORIES[bestCategory];
+    //
+    //________________________________________________________________
+  } else if (
+    CATEGORIZATION_STRATEGY ==
+    "containsTagWithGreatestConfidenceWithSecondTable"
+  ) {
+    var categoriesWithConfidences = {};
+    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
+      categoriesWithConfidences[category] = 0;
+    }
+
+    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
+      for (let tag of tags) {
+        if (
+          CATEGORY_TO_TAGS[category].includes(tag.name.toLowerCase()) &&
+          tag.confidence > categoriesWithConfidences[category]
+        ) {
+          categoriesWithConfidences[category] = tag.confidence;
+        }
+      }
+    }
+
+    let bestCategory = "";
+    let bestConfidence = 0;
+
+    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
+      if (categoriesWithConfidences[category] > bestConfidence) {
+        bestConfidence = categoriesWithConfidences[category];
+        bestCategory = category;
+      }
+    }
+
+    if (bestCategory === "") {
+      bestCategory = getCategoryByLastToCheckTags(tags);
+    }
+
+    console.log(bestCategory);
+    if (bestCategory == "") console.log("NONE");
+    return CATEGORIES[bestCategory];
+  }
 };
 
 const getCategoryByLastToCheckTags = (tags) => {
-  console.log("Trying to find category with tags last to check");
   let highestTagsAmount = 0;
   let bestCategory = "";
   for (var category of Object.keys(CATEGORY_TO_TAGS_TO_CHECK_LAST)) {
     var categoryScore = 0;
     for (let tag of tags) {
-      if (CATEGORY_TO_TAGS_TO_CHECK_LAST[category].includes(tag.name)) {
+      if (
+        CATEGORY_TO_TAGS_TO_CHECK_LAST[category].includes(
+          tag.name.toLowerCase()
+        )
+      ) {
         categoryScore++;
       }
     }

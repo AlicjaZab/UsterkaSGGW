@@ -4,10 +4,13 @@ import { View, StyleSheet } from "react-native";
 import AppText from "../AppText";
 import AppImageInputList from "../AppImageInputList";
 import createFormData from "../../utils/createFormData";
-import imageProcessingApi from "../../api/imageProcessing";
+import azureImageProcessing from "../../api/azureImageProcessing";
+import googleImageProcessing from "../../api/googleImageProcessing";
 import _ from "lodash";
 import colors from "../../config/colors";
 import getCategory from "../../utils/getCategory";
+import { printCategoriesForPhotosWithTags } from "../../utils/getCategory";
+import { TAGGS_PROVIDER } from "../../config/constants";
 
 function AppFormImagePicker({ name, name2, ...otherProps }) {
   const { setFieldValue, values } = useFormikContext();
@@ -29,25 +32,24 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
   const handleAdd = async (image) => {
     const mediaObjectImage = createFormData(image);
     setFieldValue(name, [...photos, mediaObjectImage]);
-    console.log("Attempting to get tags for an image ...");
-    //UNCOMMENT TO GET TAGS FROM AZURE
-    const response = await imageProcessingApi.getTagsForImage(mediaObjectImage);
-    if (response.status === 200) {
-      console.log(response);
-      console.log(
-        response.data.tags.map(
-          (object) => object.name + " (" + object.confidence + ");"
-        )
-      );
-      response.data.tags.forEach(
+    if (TAGGS_PROVIDER != "None") {
+      var newTags = [];
+      console.log("Attempting to get tags for an image ...");
+
+      if (TAGGS_PROVIDER == "Azure") {
+        newTags = await azureImageProcessing.getTagsForImage(mediaObjectImage);
+      } else if (TAGGS_PROVIDER == "Google") {
+        newTags = await googleImageProcessing.getTagsForImage(image);
+      }
+
+      newTags.forEach(
         (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
       );
-      addTags(response.data.tags);
-    } else {
-      console.log("Something went wrong...");
-      console.log(response);
+      addTags(newTags);
+      updateCategory(tags);
     }
-    updateCategory(tags);
+    //Can be removed after analysis
+    //printCategoriesForPhotosWithTags();
   };
 
   const updateCategory = (updatedTags) => {
@@ -102,6 +104,7 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
         newTagObject.connectedPhotos.push({
           imageUri: newTagObject.imageUri,
           confidence: newTagObject.confidence,
+          topicality: newTagObject.topicality,
         });
         delete newTagObject.imageUri;
         tags.push(newTagObject);
@@ -109,6 +112,7 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
         oldTagObject.connectedPhotos.push({
           imageUri: newTagObject.imageUri,
           confidence: newTagObject.confidence,
+          topicality: newTagObject.topicality,
         });
         oldTagObject.confidence = Math.max.apply(
           null,
@@ -116,6 +120,14 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
             (connectedPhotoObject) => connectedPhotoObject.confidence
           )
         );
+        if (!_.isNil(newTagObject.topicality)) {
+          oldTagObject.topicality = Math.max.apply(
+            null,
+            oldTagObject.connectedPhotos.map(
+              (connectedPhotoObject) => connectedPhotoObject.topicality
+            )
+          );
+        }
       }
     });
     setFieldValue(name2, tags);

@@ -2,7 +2,6 @@
 
 const createFormData = (object) => {
   const data = new FormData();
-  console.log(object);
 
   data.append("file", {
     name: "noname.jpg",

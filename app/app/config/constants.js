@@ -8,6 +8,16 @@ export const MAX_IMAGE_COUNT = 4;
 
 export const MAX_IMAGE_WIDTH_OR_HEIGHT = 500; // in pixels
 
+//Should be one of: Google/Azure/None
+// For "Google" / "Azure", categories will be chosen automatically
+// For "None", category should be always specified by user
+//
+// set to "Google", to use Google Cloud Vision service to provide tags for photos
+//    (make sure that googleApiKey has proper value)
+// set to "Azure" to use Microsoft Azure Computer Vision service to provide tags for photos
+//    (make sure that cognitiveServicesBaseUrl and key have proper values)
+export const TAGGS_PROVIDER = "None";
+
 export const CATEGORIES = {
   lighting: { label: "Oświetlenie", value: "Lighting" },
   plumbing: { label: "Hydraulika", value: "Plumbing" },
@@ -29,178 +39,6 @@ export const CATEGORIES = {
   supplies: { label: "Zaopatrzenie", value: "Supplies" },
 };
 
-export const CATEGORY_TO_TAGS = {
-  lighting: [
-    "lighting",
-    "light",
-    "light fixture",
-    "lamp",
-    "lightbox",
-    "fluorescent lamp",
-    "spotlight",
-    "headlight",
-    "lantern",
-  ],
-  plumbing: [
-    "toilet",
-    "toliet seat",
-    "bidet",
-    "urinal",
-    "tap",
-    "faucet",
-    "pipe",
-    "washbasin",
-    "basin",
-    "sink",
-    "leak",
-    "water",
-    "radiator",
-    "plumbing",
-    "drain",
-    "plumbing fixture",
-    "drinker",
-  ],
-  electrical_equipment: [
-    "projector",
-    "computer",
-    "keyboard",
-    "mouse",
-    "computer mouse",
-    "wire",
-    "vending machine",
-    "espresso machine",
-    "coffeemaker",
-    "fridge",
-    "microwave",
-    "kettle",
-    "speaker",
-    "loudspeaker",
-    "microphone",
-    "laptop",
-    "monitor",
-    "display",
-    "remote control",
-    "input device",
-    "output device",
-    "electronic device",
-    "peripheral",
-    "printer",
-    "photocopier",
-    "air conditioner",
-    "fan",
-    "machine",
-    "camera",
-    "refrigerator",
-    "hand dryer",
-  ],
-  furnishings: [
-    "chair",
-    "swivel chair",
-    "office chair",
-    "whiteboard",
-    "blackboard",
-    "table",
-    "desk",
-    "bench",
-    "outdoor bench",
-    "backrest",
-    "cabinet",
-    "closet",
-    "cupboard",
-    "shelf",
-    "furniture",
-    "mirror",
-    "waste container",
-    "furniture",
-    "seat",
-    "bin",
-    "recycle bin",
-    "armchair",
-    "exercise equipment",
-  ],
-  electrical_system: [
-    "electrical box",
-    "socket",
-    "power socket",
-    "light switch",
-    "switch",
-    "cable",
-    "cables",
-    "wires",
-    "elevator",
-    "power plugs and sockets",
-  ],
-  construction_repairs: [
-    "hole in the wall",
-    "crack",
-    "leak",
-    "drywall",
-    "plaster",
-    "tile",
-    "plaster",
-    "vent",
-    "pole",
-    "manhole",
-    "barricade",
-  ],
-  untidiness: [
-    "dirt",
-    "dirty",
-    "puddle",
-    "fudge",
-    "stain",
-    "garbage",
-    "junk",
-    "trash",
-    "mess",
-    "ford",
-    "mud",
-    "fecal matter",
-    "litter",
-    "waste container",
-  ],
-  doors_and_windows: [
-    "door",
-    "window",
-    "lock",
-    "handle",
-    "door handle",
-    "windshield",
-    "hinge",
-    "latch",
-    "doorframe",
-    "frame",
-    "hinges",
-  ],
-  supplies: [
-    "toilet paper",
-    "fire extinguisher",
-    "extinguisher",
-    "paper",
-    "soap",
-    "soapbox",
-    "disinfectant",
-    "paper towel",
-    "bathroom accessory",
-    "soap dispenser",
-    "dispenser",
-    "tiolet roll holder",
-  ],
-};
-
-export const CATEGORY_TO_TAGS_TO_CHECK_LAST = {
-  construction_repairs: [
-    "brick",
-    "wall",
-    "floor",
-    "ceiling",
-    "sidewalk",
-    "concrete",
-    "curb",
-  ],
-  plumbing: ["bathroom", "bathroom accessory"],
-};
-
 export const CATEGORY_TO_ICON = {
   Lighting: "lightbulb-on",
   Plumbing: "water-pump",
@@ -214,7 +52,13 @@ export const CATEGORY_TO_ICON = {
 };
 
 //Azure cognitive services constants
-export const key = "1306ad78a86a41c18ff997af89080f03";
+export const key = "paste your key here";
+// this url also should be changed to math your project
 export const cognitiveServicesBaseUrl =
   "https://image-recognition-project.cognitiveservices.azure.com/vision/v3.2";
 export const endpointTagsEn = "/analyze?visualFeatures=Tags";
+
+//Google Cloud Vision API constants
+export const googleApiUrl =
+  "https://vision.googleapis.com/v1/images:annotate?key=";
+export const googleApiKey = "paste your key here";
