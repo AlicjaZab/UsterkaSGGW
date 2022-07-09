@@ -1,12 +1,12 @@
 # UsterkaSGGW
 Aplikacja służąca do zgłaszania usterek na kampusie SGGW. 
 Po uruchomieniu aplikacji użytkownik może utworzyć nowe zgłoszenie, gdzie powinien załadować zdjęcie usterki. 
-Po załadowaniu zdjęcia generowane są tagi (przy pomocy interfejsu api Computer Vision - Azure Cognitive Services), 
-na podstawie których automatycznie wybierana jest kategoria. Poza zdjęciem użytkownik powininen też podać lokalizację, może także dodać słowny opis usterki.
+Po załadowaniu zdjęcia generowane są tagi (przy pomocy interfejsu API Azure Cognitive Services Computer Vision LUB Google Cloud Vision - co można skonfigurować w pliku constants.js), 
+na podstawie których automatycznie wybierana jest kategoria. Poza zdjęciem użytkownik powininen też podać lokalizację, może także dodać słowny opis usterki. Po zatwierdzeniu zgłoszenia jest ono wysyłane mailowo do odpowiedniej osoby (pracowników wraz z mailami i kategoriami można sprecyzować w pliku StaffPeople.txt, skąd zostaną załadowani po utworzeniu bazy danych).
 
 ## Ekrany aplikacji
 ### Lista zgłoszeń
-Pierwszy ekran po uruchomieniu aplikacji.
+Pierwszy ekran po uruchomieniu aplikacji. Widoczne są na nim wszystkie utworzone zgłoszenia, gdzie najnowsze pojawiają się na samej górze.
 
 ![image](https://user-images.githubusercontent.com/56516909/164992120-6a0b1ffb-80a9-4454-8b91-54e46b26559a.png)
 
