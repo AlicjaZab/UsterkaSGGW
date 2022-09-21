@@ -45,5 +45,4 @@ class StaffPersonRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
 }
