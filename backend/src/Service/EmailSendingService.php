@@ -21,7 +21,7 @@ final class EmailSendingService
         $recipients = $report->getNotifiedPeople();
         foreach($recipients as $reciepient) {
             $reciepientEmail = $reciepient->getEmail();
-            $category = $report->getCategory();
+            $category = $report->getCategory()->getName();
             $mapLink = $report->getLocation()->getLatitude() == null ? null : 
                 'https://maps.google.com/?q=' . $report->getLocation()->getLatitude() . ',' . $report->getLocation()->getLongitude();
 

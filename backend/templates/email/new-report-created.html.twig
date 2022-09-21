@@ -1,7 +1,7 @@
 <p>
 Cześć {{ reciepient.getName() }},
 <br><br>
-Została zgłoszona nowa usterka z kategorii {{ report.getCategory() }}. Poniżej znajdują się wszystkie informaje podane przez osobę zgłaszającą. W załączniku znajdują się zdjęcia usterki.
+Została zgłoszona nowa usterka z kategorii {{ report.getCategory().getName() }}. Poniżej znajdują się wszystkie informaje podane przez osobę zgłaszającą. W załączniku znajdują się zdjęcia usterki.
 <br><br>
 
 {% if report.getDescription() != null %}
@@ -20,7 +20,7 @@ Kliknij <a href={{ mapLink }}>w ten link</a> aby zobaczyć lokalizację w Google
 <br>
 <p style="color:gray">
 Otrzymujesz tę wiadomość e-mail, ponieważ Twój adres e-mail został podany jako kontaktowy w przypadku usterek 
-związanych z kategorią {{ report.getCategory() }} w aplikacji "Usterka SGGW". <br>
+związanych z kategorią {{ report.getCategory().getName() }} w aplikacji "Usterka SGGW". <br>
 Jeśli uważasz, że nie powinieneś otrzymywać takich wiadomości, napisz e-mail na adres alicja.zabylska@gmail.com.
 <br> <br>
 <b>Ta wiadomość e-mail została wygenerowana automatycznie, prosimy na nią nie odpowiadać.</b>
@@ -33,7 +33,7 @@ Jeśli uważasz, że nie powinieneś otrzymywać takich wiadomości, napisz e-ma
 <p>
 Hello {{ reciepient.getName() }},
 <br> <br>
-There was a new issue reported for category {{ report.getCategory() }}. Please find below all the information provided by reporter. In the attachemnt there are photos for reported issue.
+There was a new issue reported for category {{ report.getCategory().getName() }}. Please find below all the information provided by reporter. In the attachemnt there are photos for reported issue.
 <br><br>
 
 {% if report.getDescription() != null %}
@@ -52,7 +52,7 @@ Click <a href={{ mapLink }}>this link</a> to check location on google maps.<br>
 <br>
 <p style="color:gray">
 You are receiving this email because your email address was specified as a contact email in case of issues 
-connected to category {{ report.getCategory() }} in application 'Usterka SGGW'. <br>
+connected to category {{ report.getCategory().getName() }} in application 'Usterka SGGW'. <br>
 If you think you should not receive this email, please write an email to alicja.zabylska@gmail.com.
 <br> <br>
 <b>This email has been generated automatically, please do not reply to it.</b>

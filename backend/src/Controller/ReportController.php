@@ -13,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-//use DateTime
 
 #[AsController]
 final class ReportController extends AbstractController
@@ -35,27 +34,32 @@ final class ReportController extends AbstractController
         $requestBody = $request->toArray();
         $report = new Report();
 
+        # set category
         if (! array_key_exists("category", $requestBody)){
             throw new BadRequestHttpException('Mandatory value not provided in request body: category');
         }
-        $report->setCategory($requestBody["category"]);
         $category = $this->categoryRepository->findByName($requestBody["category"]);
         if ($category == null) throw new BadRequestHttpException('Provided category does not exist: ' . $requestBody["category"]);
+        $report->setCategory($category);
+        
+        # find & set people to find
         $peopleToNotify = $this->staffPersonRepository->findByCategory($category);
         foreach($peopleToNotify as $personToNotify) {
             $report->addNotifiedPerson($personToNotify);
         }
 
+        # set description
         if (array_key_exists("description", $requestBody)){
             $report->setDescription($requestBody["description"]);
         }
-        //TODO remove status
-        $report->setStatus($requestBody["status"]);
+
+        # set create date
         if (! array_key_exists("createDate", $requestBody)){
             throw new BadRequestHttpException('Mandatory value not provided in request body: createDate');
         }
         $report->setCreateDate(new \DateTime($requestBody["createDate"]));
 
+        # set location
         $location = new Location();
         if (! array_key_exists("location", $requestBody)){
             throw new BadRequestHttpException('Mandatory value not provided in request body: location');
@@ -69,6 +73,7 @@ final class ReportController extends AbstractController
         }
         $report->setLocation($location);
 
+        # find & set photos
         if (! array_key_exists("photos", $requestBody)){
             throw new BadRequestHttpException('Mandatory value not provided in request body: photos');
         }
@@ -76,14 +81,16 @@ final class ReportController extends AbstractController
             $urlPieces = explode("/", $photoUrl);
             $photoId = $urlPieces[3];
             $photo = $this->mediaObjectRepository->findById($photoId);
+            if ($photo == null) throw new BadRequestHttpException('Photo with provided ID does not exist: ' . $photoId);
             $report->addPhoto($photo);
         }
+
+        # send email
         try{
             $this->emailSendingService->send($report);
         } catch  (Exception $e) {
             print($e);
         }
-        
         
         return $report;
     }

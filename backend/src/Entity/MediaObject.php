@@ -20,9 +20,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     iri: 'http://schema.org/MediaObject',
     normalizationContext: ['groups' => ['media_object:read']],
     denormalizationContext: ['groups' => ['media_object:write']],
-    itemOperations: ['get', 'delete'],
+    itemOperations: ['get'],
     collectionOperations: [
-        'get',
         'post' => [
             'controller' => CreateMediaObjectAction::class,
             'deserialize' => false,

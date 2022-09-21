@@ -5,12 +5,14 @@ namespace App\Entity;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
 #[ApiResource(
-    itemOperations: [],
+    itemOperations: ['get'],
     collectionOperations: ['get'])]
 class Category
 {
@@ -22,9 +24,15 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @Groups({"report-write", "report-read"})
      */
     private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="category")
+     */
+    private $reports;
 
     public function getId(): ?int
     {
@@ -42,4 +50,13 @@ class Category
 
         return $this;
     }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
 }

@@ -11,35 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * add chere a małpa and scpecify exactly what operations to use and how
-*  ApiResource(
-*       collectionOperations={
-*           "get"={
-*               "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
-*           },
-*           "post"={
-*               "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
-*           }
-*       },
-*       itemOperations={
-*       "get"={
-*               "access_control"="is_granted('ROLE_ADMIN') or object.getUser() == user"
-*           },
-*           "put"={
-*               "access_control"="is_granted('ROLE_ADMIN') or object.getUser() == user"
-*          },
-*           "delete"={
-*               "access_control"="is_granted('ROLE_ADMIN') or object.getUser() == user"
-*          }
-*       }
-*
  * @ORM\Entity(repositoryClass=ReportRepository::class)
  */
 #[ApiResource(
     normalizationContext: ['groups' => ['report-read']],
     denormalizationContext: ['groups' => ['report-write']],
     order: ['createDate' => 'DESC'],
-    itemOperations: ['get', 'delete'],
+    itemOperations: ['get'],
     collectionOperations: [
         'get',
         'post' => [
@@ -60,7 +38,8 @@ class Report
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="reports")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups({"report-write", "report-read"})
      */
     private $category;
@@ -72,22 +51,10 @@ class Report
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"report-write", "report-read"})
-     */
-    private $status;
-
-    /**
      * @ORM\Column(type="datetime")
      * @Groups({"report-write", "report-read"})
      */
     private $createDate;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"report-write", "report-read"})
-     */
-    private $closeDate;
 
     /**
      * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="report")
@@ -119,12 +86,12 @@ class Report
         return $this->id;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(string $category): self
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 
@@ -143,18 +110,6 @@ class Report
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getCreateDate(): ?\DateTimeInterface
     {
         return $this->createDate;
@@ -163,18 +118,6 @@ class Report
     public function setCreateDate(\DateTimeInterface $createDate): self
     {
         $this->createDate = $createDate;
-
-        return $this;
-    }
-
-    public function getCloseDate(): ?\DateTimeInterface
-    {
-        return $this->closeDate;
-    }
-
-    public function setCloseDate(?\DateTimeInterface $closeDate): self
-    {
-        $this->closeDate = $closeDate;
 
         return $this;
     }

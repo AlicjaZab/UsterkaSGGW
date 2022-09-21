@@ -3,14 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\StaffPersonRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use App\Controller\StaffPersonController;
 
 /**
  * @ORM\Entity(repositoryClass=StaffPersonRepository::class)
  */
+#[ApiResource(
+    itemOperations: ['get', 'delete', 'put'],
+    collectionOperations: ['get','post' => ['controller' => StaffPersonController::class, 'deserialize' => false,]])]
 class StaffPerson
 {
     /**
@@ -33,7 +38,7 @@ class StaffPerson
     private $surname;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     private $email;
 
@@ -125,23 +130,4 @@ class StaffPerson
     {
         return $this->reports;
     }
-
-    // public function addReport(Report $report): self
-    // {
-    //     if (!$this->reports->contains($report)) {
-    //         $this->reports[] = $report;
-    //         $report->addNotifiedPerson($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeReport(Report $report): self
-    // {
-    //     if ($this->reports->removeElement($report)) {
-    //         $report->removeNotifiedPerson($this);
-    //     }
-
-    //     return $this;
-    // }
 }

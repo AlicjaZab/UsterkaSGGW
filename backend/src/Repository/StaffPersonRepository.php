@@ -35,34 +35,15 @@ class StaffPersonRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
 
-    // /**
-    //  * @return StaffPerson[] Returns an array of StaffPerson objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByEmail($email): ?StaffPerson
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?StaffPerson
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('s.email = :val')
+            ->setParameter('val', $email)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }
