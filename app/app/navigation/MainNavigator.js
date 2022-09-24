@@ -47,6 +47,7 @@ const MainNavigator = () => (
       component={ReportDetailsScreen}
       options={({ route, navigation }) => ({
         title: "Zgłoszenie nr " + route.params.data.id,
+        headerTitleAlign: "right",
         headerLeft: () => (
           <TouchableOpacity
             onPress={() => navigation.navigate(ReportsListScreen)}

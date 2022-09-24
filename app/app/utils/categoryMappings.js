@@ -24,7 +24,7 @@ export const CATEGORY_TO_TAGS = {
     "basin",
     "sink",
     "leak",
-    "water",
+    //"water",
     "radiator",
     "plumbing",
     "drain",
@@ -61,7 +61,7 @@ export const CATEGORY_TO_TAGS = {
     "photocopier",
     "air conditioner",
     "fan",
-    "machine",
+    //"machine",
     "camera",
     "refrigerator",
     "hand dryer",
@@ -102,11 +102,11 @@ export const CATEGORY_TO_TAGS = {
     "shelf",
     "furniture",
     "mirror",
-    "waste container",
+    //"waste container",
     "furniture",
     "seat",
     "bin",
-    "recycle bin",
+    //"recycle bin",
     "armchair",
     "exercise equipment",
     "outdoor furniture", //
@@ -123,7 +123,7 @@ export const CATEGORY_TO_TAGS = {
     "wires",
     "elevator",
     "power plugs and sockets",
-    "electricity", //
+    //"electricity", //
     "electrical_supply", //
     "electrical wiring", //
     "fire alarm system", //
@@ -161,7 +161,7 @@ export const CATEGORY_TO_TAGS = {
     "toilet paper",
     "fire extinguisher",
     "extinguisher",
-    "paper",
+    //"paper",
     "soap",
     "soapbox",
     "disinfectant",
@@ -180,12 +180,13 @@ export const CATEGORY_TO_TAGS_TO_CHECK_LAST = {
     // "wall",
     // "floor",
     // "ceiling",
-    "sidewalk",
-    "concrete",
+    //"sidewalk",
+    //"concrete",
     "curb",
-    "building material",
+    //"building material",
   ],
   plumbing: ["bathroom", "bathroom accessory"],
+  furnishings: ["waste container", "recycle bin"],
 };
 
 export const CATEGORY_TO_TAGS_FULL = {
@@ -214,7 +215,7 @@ export const CATEGORY_TO_TAGS_FULL = {
     "basin",
     "sink",
     "leak",
-    "water",
+    //"water",
     "radiator",
     "plumbing",
     "drain",
@@ -253,7 +254,7 @@ export const CATEGORY_TO_TAGS_FULL = {
     "photocopier",
     "air conditioner",
     "fan",
-    "machine",
+    //"machine",
     "camera",
     "refrigerator",
     "hand dryer",
@@ -299,7 +300,7 @@ export const CATEGORY_TO_TAGS_FULL = {
     "wire", //
     "elevator",
     "power plugs and sockets",
-    "electricity", //
+    // "electricity", //
     "electrical_supply", //
     "electrical wiring", //
     "fire alarm system", //
@@ -317,11 +318,11 @@ export const CATEGORY_TO_TAGS_FULL = {
     "manhole",
     "barricade",
     "brick",
-    "wall",
-    "floor",
-    "ceiling",
-    "sidewalk",
-    "concrete",
+    //"wall",
+    //"floor",
+    //"ceiling",
+    //"sidewalk",
+    //"concrete",
     "curb",
   ],
   untidiness: [
@@ -361,7 +362,7 @@ export const CATEGORY_TO_TAGS_FULL = {
     "toilet paper",
     "fire extinguisher",
     "extinguisher",
-    "paper",
+    // "paper",
     "soap",
     "soapbox",
     "disinfectant",
@@ -373,3 +374,6 @@ export const CATEGORY_TO_TAGS_FULL = {
     "paper towel holder", //
   ],
 };
+
+//changes: rem: machine, water,building material, sidewalk, concrete, paper
+// waste container & recycyle bin -> secondary map

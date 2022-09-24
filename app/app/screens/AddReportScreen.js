@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AppForm from "../components/form/AppForm";
 import * as Yup from "yup";
 import AppFormTextInput from "../components/form/AppFormTextInput";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, StyleSheet, KeyboardAvoidingView } from "react-native";
 
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -91,11 +91,9 @@ function AddReportScreen({ navigation }) {
     const report = {
       category: values.category.value,
       description: values.description,
-      status: "new",
       createDate: new Date().toLocaleString("en-US", {
         timeZone: "Europe/Warsaw",
       }),
-      closeDate: null,
       location: {
         description: values.locationDescription,
         latitude: values.coordinates ? values.coordinates.latitude : null,
@@ -103,6 +101,7 @@ function AddReportScreen({ navigation }) {
       },
       photos: photoIds,
     };
+    console.log(report);
     sendReport(report);
   };
 
@@ -145,87 +144,96 @@ function AddReportScreen({ navigation }) {
 
   return (
     <Screen>
-      {loading == false && (
-        <View>
-          <AppForm
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values) => handleSubmit(values)}
-          >
-            <AppFormItem
-              label="Zdjęcia"
-              name="photos"
-              required={true}
-              style={{ marginTop: 20 }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{ flex: 1 }}
+      >
+        {loading == false && (
+          <View style={styles.container}>
+            <AppForm
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={(values) => handleSubmit(values)}
             >
-              <AppFormImagePicker
+              <AppFormItem
                 label="Zdjęcia"
                 name="photos"
-                name2="tags"
                 required={true}
-              />
-            </AppFormItem>
+                style={{ marginTop: 20 }}
+              >
+                <AppFormImagePicker
+                  label="Zdjęcia"
+                  name="photos"
+                  name2="tags"
+                  required={true}
+                />
+              </AppFormItem>
 
-            <AppFormItem
-              label="Kategoria"
-              name="category"
-              required={true}
-              description="Kategoria zostanie wybrana automatycznie na podstwie dodanych zdjęć, jednak możesz ją zmienić."
-            >
-              <AppFormPicker items={CATEGORIES} name="category" />
-            </AppFormItem>
+              <AppFormItem
+                label="Kategoria"
+                name="category"
+                required={true}
+                description="Kategoria zostanie wybrana automatycznie na podstwie dodanych zdjęć, jednak możesz ją zmienić."
+              >
+                <AppFormPicker items={CATEGORIES} name="category" />
+              </AppFormItem>
 
-            <AppFormItem
-              label="Lokalizacja"
-              name="locationDescription"
-              required={true}
-              description="Dodaj opis miejsca, jeśli nie możesz podać geolokalizacji, lub możesz ją doprecyzować."
-            >
-              <AppFormGeolocationInput
-                name="coordinates"
-                buttonLabel="Udostępnij geolokalizację"
-              ></AppFormGeolocationInput>
-
-              <AppFormTextInput
+              <AppFormItem
+                label="Lokalizacja"
                 name="locationDescription"
-                placeholder="np. Budynek ..., sala ..."
-              />
-            </AppFormItem>
+                required={true}
+                description="Dodaj opis miejsca, jeśli nie możesz podać geolokalizacji, lub możesz ją doprecyzować."
+              >
+                <AppFormGeolocationInput
+                  name="coordinates"
+                  buttonLabel="Udostępnij geolokalizację"
+                ></AppFormGeolocationInput>
 
-            <AppFormItem label="Opis" name="description">
-              <AppFormTextInput
-                name="description"
-                placeholder="Jeśli należy doprecyzować problem..."
-              />
-            </AppFormItem>
-            <View style={{ marginBottom: 40 }}>
-              <SubmitButton label="Wyślij zgłoszenie"></SubmitButton>
-              <AppButton
-                label="Anuluj"
-                onPress={handleCancel}
-                color={colors.mediumGrey}
-              ></AppButton>
-            </View>
-          </AppForm>
-        </View>
-      )}
-      {loading == true && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color={colors.secondary}
-          ></ActivityIndicator>
-          <AppText style={{ color: colors.secondary }}>
-            Wysyłanie zgłoszenia...
-          </AppText>
-        </View>
-      )}
+                <AppFormTextInput
+                  name="locationDescription"
+                  placeholder="np. Budynek ..., sala ..."
+                />
+              </AppFormItem>
+
+              <AppFormItem label="Opis" name="description">
+                <AppFormTextInput
+                  name="description"
+                  placeholder="Jeśli należy doprecyzować problem..."
+                />
+              </AppFormItem>
+              <View style={{ marginBottom: 10 }}>
+                <SubmitButton label="Wyślij zgłoszenie"></SubmitButton>
+                <AppButton
+                  label="Anuluj"
+                  onPress={handleCancel}
+                  color={colors.mediumGrey}
+                ></AppButton>
+              </View>
+            </AppForm>
+          </View>
+        )}
+        {loading == true && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              color={colors.secondary}
+            ></ActivityIndicator>
+            <AppText style={{ color: colors.secondary }}>
+              Wysyłanie zgłoszenia...
+            </AppText>
+          </View>
+        )}
+      </KeyboardAvoidingView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   map: {
     width: 300,
     height: 250,

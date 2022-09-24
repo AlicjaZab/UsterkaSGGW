@@ -1,25 +1,14 @@
 import { create } from "apisauce";
-import {
-  serverUrl,
-  cognitiveServicesBaseUrl,
-  googleApiUrl,
-  googleApiKey,
-} from "../config/constants";
+import { REACT_APP_API_URL, REACT_APP_API_KEY } from "@env";
 
-const baseURL = serverUrl + "/api";
+const baseURL = REACT_APP_API_URL + "/api";
 
 const apiClient = create({
   baseURL: baseURL,
+  headers: {
+    Authorization: REACT_APP_API_KEY,
+  },
+  timeout: 10000,
 });
 
 export default apiClient;
-
-//client for Microsoft Azure Cognitive Services - Computer Vision API
-export const computerVisionClient = create({
-  baseURL: cognitiveServicesBaseUrl,
-});
-
-//client for Google Cloud Vision API
-export const googleVisionClient = create({
-  baseURL: googleApiUrl + googleApiKey,
-});

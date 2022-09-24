@@ -6,7 +6,7 @@ import Moment from "moment";
 import AppDetailsItem from "../components/AppDetailsItem";
 import AppText from "../components/AppText";
 import mediaObjectApi from "../api/mediaObject";
-import { serverUrl } from "../config/constants";
+import { REACT_APP_API_URL } from "@env";
 import AppImageGallery from "../components/AppImageGallery";
 import AppMapWithMarker from "../components/AppMapWithMarker";
 import { getLabelByValue } from "../utils/getCategory";
@@ -32,7 +32,7 @@ function ReportDetailsScreen({ route }) {
 
   const imageUrls = [];
   for (let i of data.photos) {
-    imageUrls.push(serverUrl + i.contentUrl);
+    imageUrls.push(REACT_APP_API_URL + i.contentUrl);
   }
   //Image.prefetch(imageUrls[0]);
   try {
@@ -48,7 +48,7 @@ function ReportDetailsScreen({ route }) {
   return (
     <Screen style={{ marginVertical: 20 }}>
       <AppDetailsItem title="Kategoria">
-        <AppText>{getLabelByValue(data.category)}</AppText>
+        <AppText>{getLabelByValue(data.category.name)}</AppText>
       </AppDetailsItem>
       <AppDetailsItem title="Data utworzenia">
         <AppText>{Moment(data.createDate).format("DD/MM/YYYY hh:mm")}</AppText>

@@ -7,14 +7,6 @@ import {
   CATEGORY_TO_TAGS_FULL,
 } from "./categoryMappings";
 
-// Change this constant to specify categorization dependent on tags strategy
-// Works only with enabled tagging with Azure or Google
-// Recommended option 3
-//option 1            /option 2                         /option 3
-//biggestAmountOfTaggs/containsTagWithGreatestConfidence/containsTagWithGreatestConfidenceWithSecondTable
-const CATEGORIZATION_STRATEGY =
-  "containsTagWithGreatestConfidenceWithSecondTable";
-
 // --- START of code that can be removed this after analysis ----
 // this piece of code was written to check which of implemented strategies is the best for given data sets
 
@@ -52,8 +44,14 @@ export const printCategoriesForPhotosWithTags = () => {
 };
 // --- END of code that can be removed this after analysis ----
 
-const getCategory = (tags) => {
-  if (CATEGORIZATION_STRATEGY == "biggestAmountOfTaggs") {
+const getCategory = (tags, tagsProvider) => {
+  console.log(tagsProvider);
+  if (tagsProvider != "Azure" && tagsProvider != "Google") {
+    return;
+  }
+
+  if (tagsProvider == "Azure") {
+    // strategy "choose category with greatest amount of tags, use two tables"
     let highestTagsAmount = 0;
     let bestCategory = "";
     for (var category of Object.keys(CATEGORY_TO_TAGS)) {
@@ -78,7 +76,8 @@ const getCategory = (tags) => {
     return CATEGORIES[bestCategory];
     //
     //__________________________________________________________________________
-  } else if (CATEGORIZATION_STRATEGY == "containsTagWithGreatestConfidence") {
+  } else if (tagsProvider == "Google") {
+    // strategy "contains tag with greates confidence, use one table"
     var categoriesWithConfidences = {};
     for (var category of Object.keys(CATEGORY_TO_TAGS_FULL)) {
       categoriesWithConfidences[category] = 0;
@@ -104,45 +103,6 @@ const getCategory = (tags) => {
         bestCategory = category;
       }
     }
-    console.log(bestCategory);
-    if (bestCategory == "") console.log("NONE");
-    return CATEGORIES[bestCategory];
-    //
-    //________________________________________________________________
-  } else if (
-    CATEGORIZATION_STRATEGY ==
-    "containsTagWithGreatestConfidenceWithSecondTable"
-  ) {
-    var categoriesWithConfidences = {};
-    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
-      categoriesWithConfidences[category] = 0;
-    }
-
-    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
-      for (let tag of tags) {
-        if (
-          CATEGORY_TO_TAGS[category].includes(tag.name.toLowerCase()) &&
-          tag.confidence > categoriesWithConfidences[category]
-        ) {
-          categoriesWithConfidences[category] = tag.confidence;
-        }
-      }
-    }
-
-    let bestCategory = "";
-    let bestConfidence = 0;
-
-    for (var category of Object.keys(CATEGORY_TO_TAGS)) {
-      if (categoriesWithConfidences[category] > bestConfidence) {
-        bestConfidence = categoriesWithConfidences[category];
-        bestCategory = category;
-      }
-    }
-
-    if (bestCategory === "") {
-      bestCategory = getCategoryByLastToCheckTags(tags);
-    }
-
     console.log(bestCategory);
     if (bestCategory == "") console.log("NONE");
     return CATEGORIES[bestCategory];

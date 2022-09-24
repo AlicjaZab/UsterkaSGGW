@@ -18,12 +18,12 @@ const ReportListItem = ({ navigation, reportData }) => {
       <View style={styles.detailsContainer}>
         <Icon
           style={styles.icon}
-          name={CATEGORY_TO_ICON[reportData.category]}
+          name={CATEGORY_TO_ICON[reportData.category.name]}
         />
         <View>
           <AppText style={styles.reportId}>Zgłoszenie {reportData.id}</AppText>
           <AppText style={styles.category}>
-            {getLabelByValue(reportData.category)}
+            {getLabelByValue(reportData.category.name)}
           </AppText>
           <AppText style={styles.date}>
             {Moment(reportData.createDate).format("DD/MM/YYYY hh:mm")}

@@ -4,13 +4,14 @@ import { View, StyleSheet } from "react-native";
 import AppText from "../AppText";
 import AppImageInputList from "../AppImageInputList";
 import createFormData from "../../utils/createFormData";
-import azureImageProcessing from "../../api/azureImageProcessing";
-import googleImageProcessing from "../../api/googleImageProcessing";
+import tagsClient from "../../api/tags";
 import _ from "lodash";
 import colors from "../../config/colors";
 import getCategory from "../../utils/getCategory";
 import { printCategoriesForPhotosWithTags } from "../../utils/getCategory";
-import { TAGGS_PROVIDER } from "../../config/constants";
+import { REACT_APP_tags_PROVIDER } from "@env";
+
+var tagsProvider = "None";
 
 function AppFormImagePicker({ name, name2, ...otherProps }) {
   const { setFieldValue, values } = useFormikContext();
@@ -32,28 +33,36 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
   const handleAdd = async (image) => {
     const mediaObjectImage = createFormData(image);
     setFieldValue(name, [...photos, mediaObjectImage]);
-    if (TAGGS_PROVIDER != "None") {
-      var newTags = [];
-      console.log("Attempting to get tags for an image ...");
+    var tagsResponse = await tagsClient.getTags(mediaObjectImage);
+    console.log(tagsResponse);
 
-      if (TAGGS_PROVIDER == "Azure") {
-        newTags = await azureImageProcessing.getTagsForImage(mediaObjectImage);
-      } else if (TAGGS_PROVIDER == "Google") {
-        newTags = await googleImageProcessing.getTagsForImage(image);
-      }
-
-      newTags.forEach(
-        (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
-      );
-      addTags(newTags);
-      updateCategory(tags);
+    tagsProvider = tagsResponse.data.taggsProvider;
+    if (tagsProvider == "None") return;
+    if (tagsProvider != "Azure" && tagsProvider != "Google") {
+      console.log("Unsupported tags provider specified.");
+      return;
     }
-    //Can be removed after analysis
-    //printCategoriesForPhotosWithTags();
+    var newTags = [];
+    if (tagsProvider == "Google") {
+      newTags = tagsResponse.data.response.responses[0].labelAnnotations;
+      newTags.forEach((element) => {
+        element.name = element.description;
+        element.confidence = element.score;
+        delete element.description;
+        delete element.score;
+      });
+    } else if (tagsProvider == "Azure") {
+      newTags = tagsResponse.data.response.tags;
+    }
+    newTags.forEach(
+      (object) => (object.imageUri = mediaObjectImage._parts[0][1].uri)
+    );
+    addTags(newTags);
+    updateCategory(tags);
   };
 
   const updateCategory = (updatedTags) => {
-    var category = getCategory(updatedTags);
+    var category = getCategory(updatedTags, tagsProvider);
     setFieldValue("category", category);
   };
 
