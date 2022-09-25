@@ -30,7 +30,7 @@ final class EmailSendingService
                 ->from(new Address('usterka.sggw@jaylab.pl', 'Usterka SGGW'))
                 ->to($reciepientEmail)
                 ->subject("New report for category " . $category)
-                ->htmlTemplate('email\new-report-created.html.twig')
+                ->htmlTemplate('email/new-report-created.html.twig')
                 ->context([
                     'reciepient' => $reciepient,
                     'report' => $report,
@@ -38,7 +38,7 @@ final class EmailSendingService
                 ]);
 
             foreach($report->getPhotos() as $photo) {
-                $photo_path = 'media\\' . $photo->filePath;
+                $photo_path = 'media/' . $photo->filePath;
                 $filename = 'photo' . $photo->getId() . '.jpg';
                 $email
                     ->embed(fopen($photo_path, 'r'), $filename);

@@ -21,7 +21,7 @@ class AppFixtures extends Fixture
     // careful! it purges database.
     public function load(ObjectManager $manager)
     {
-        $categoryNames = file("src\DataFixtures\Categories.txt", FILE_IGNORE_NEW_LINES);
+        $categoryNames = file("src/DataFixtures/Categories.txt", FILE_IGNORE_NEW_LINES);
         foreach ($categoryNames as $categoryName) {
             $category = new Category();
             $category->setName($categoryName);
@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
-        $staffPeopleData = file("src\DataFixtures\StaffPeople.txt", FILE_IGNORE_NEW_LINES);
+        $staffPeopleData = file("src/DataFixtures/StaffPeople.txt", FILE_IGNORE_NEW_LINES);
         foreach ($staffPeopleData as $staffPersonData) {
             $staffPersonDataArray = explode(" ", $staffPersonData);
             $staffPerson = new StaffPerson();

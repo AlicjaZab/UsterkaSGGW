@@ -43,7 +43,7 @@ class CloudServicesApiController extends AbstractController
             $httpClient = HttpClient::create();
             
              $formFields = [
-                'file_field' => DataPart::fromPath($uploadedFile-> getPath( ) . '\\'. $uploadedFile -> getFilename()),
+                'file_field' => DataPart::fromPath($uploadedFile-> getPath( ) . '/'. $uploadedFile -> getFilename()),
             
              ];
              $formData = new FormDataPart($formFields);
@@ -64,7 +64,7 @@ class CloudServicesApiController extends AbstractController
             if (!$uploadedFile) {
                 throw new BadRequestHttpException('"file" is required');
             }
-            $data = file_get_contents($uploadedFile-> getPath( ) . '\\'. $uploadedFile -> getFilename());
+            $data = file_get_contents($uploadedFile-> getPath( ) . '/'. $uploadedFile -> getFilename());
             $base64format=base64_encode($data);
 
             $body = [
