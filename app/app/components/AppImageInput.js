@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import colors from "../config/colors";
-import IconButton from "./IconButton";
 import * as ImagePicker from "expo-image-picker";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Alert } from "react-native";
+
+import IconButton from "./IconButton";
+
 import {
   MAX_IMAGE_COUNT,
   MAX_IMAGE_WIDTH_OR_HEIGHT,
 } from "../config/constants";
+import colors from "../config/colors";
 
 function AppImageInput({ onPress, isMaxReached }) {
   const [imageSource, setImageSource] = useState("");

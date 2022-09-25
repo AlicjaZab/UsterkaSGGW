@@ -1,10 +1,6 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import { TextInput, View } from "react-native";
 
-import ErrorMessage from "./ErrorMessage";
-import AppText from "../AppText";
-import defaultStyles from "../../config/styles";
 import AppTextInput from "../AppTextInput";
 
 function AppFormTextInput({

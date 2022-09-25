@@ -6,16 +6,13 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
-import reportsApi from "../api/reports";
+
 import ReportListItem from "../components/ReportListItem";
 import AppButton from "../components/AppButton";
-import colors from "../config/colors";
-import Screen from "../components/Screen";
-import { Button } from "react-native";
 import IconButton from "../components/IconButton";
-import AppText from "../components/AppText";
-import defaultStyles from "../config/styles";
-import ListItemSeparator from "../components/ListItemSeparator";
+
+import reportsApi from "../api/reports";
+import colors from "../config/colors";
 
 function ReportsListScreen({ navigation }) {
   const [reports, setReports] = useState([]);

@@ -1,8 +1,7 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
-import defaultStyles from "../config/styles";
+import { TextInput } from "react-native";
 
-import colors from "../config/colors";
+import defaultStyles from "../config/styles";
 
 function AppTextInput({ width = "100%", placeholder = "", ...otherProps }) {
   return (

@@ -1,6 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+
 import AppButton from "../components/AppButton";
+
 import colors from "../config/colors";
 import defaultStyles from "../config/styles";
 
@@ -55,16 +57,13 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 70,
     flex: 0.7,
-    //backgroundColor: "white",
     justifyContent: "space-between",
   },
   descriptionText: {
     textAlign: "center",
     width: 200,
-    // marginTop: 20,
   },
   logo: {
-    // marginVertical: 10,
     width: 100,
     height: 100,
   },
@@ -76,10 +75,8 @@ const styles = StyleSheet.create({
     borderRadius: 90,
   },
   logoContainer: {
-    //position: "absolute",
     alignItems: "center",
     marginBottom: 20,
-    //top: 100,
   },
 });
 

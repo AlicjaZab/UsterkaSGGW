@@ -1,7 +1,9 @@
 import React from "react";
 import { Alert, View, Image, StyleSheet } from "react-native";
-import colors from "../config/colors";
+
 import IconButton from "./IconButton";
+
+import colors from "../config/colors";
 
 function AppImageDeletableMinature({ imageUri, onRemove }) {
   const handlePress = () => {

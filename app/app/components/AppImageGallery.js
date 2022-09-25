@@ -7,10 +7,10 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from "react-native";
-import AppImageDeletableMinature from "./AppImageDeletableMinature";
-import AppImageInput from "./AppImageInput";
-import colors from "../config/colors";
+
 import IconButton from "./IconButton";
+
+import colors from "../config/colors";
 
 function AppImageGallery({ imageUrls, style }) {
   const scrollView = useRef();

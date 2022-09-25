@@ -15,6 +15,7 @@
     "@use-expo/font": "^2.0.0",
     "apisauce": "^2.1.1",
     "compress.js": "^1.2.2",
+    "date-fns": "^2.29.3",
     "expo": "^45.0.0",
     "expo-constants": "~13.1.1",
     "expo-file-system": "~14.0.0",

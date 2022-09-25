@@ -1,11 +1,11 @@
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
-import Constants from "expo-constants";
+
+import AppText from "./AppText";
+import ListItemSeparator from "./ListItemSeparator";
 
 import defaultStyles from "../config/styles";
 import colors from "../config/colors";
-import AppText from "./AppText";
-import ListItemSeparator from "./ListItemSeparator";
 
 function Screen({ children, style, title }) {
   return (

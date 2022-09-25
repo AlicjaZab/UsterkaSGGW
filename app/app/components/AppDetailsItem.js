@@ -1,7 +1,9 @@
-import React, { StyleSheet } from "react";
-import AppText from "./AppText";
-import styles from "../config/styles";
+import React from "react";
 import { View } from "react-native";
+
+import AppText from "./AppText";
+
+import styles from "../config/styles";
 
 function AppDetailsItem({ title, children }) {
   return (

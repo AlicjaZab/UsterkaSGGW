@@ -1,15 +1,15 @@
 import React from "react";
-import Screen from "../components/Screen";
-import { View, Image, Text } from "react-native";
-import Moment from "moment";
+import { View, Image } from "react-native";
+import format from "date-fns/format";
 
+import Screen from "../components/Screen";
 import AppDetailsItem from "../components/AppDetailsItem";
 import AppText from "../components/AppText";
-import mediaObjectApi from "../api/mediaObject";
-import { REACT_APP_API_URL } from "@env";
 import AppImageGallery from "../components/AppImageGallery";
 import AppMapWithMarker from "../components/AppMapWithMarker";
+
 import { getLabelByValue } from "../utils/getCategory";
+import { REACT_APP_API_URL } from "@env";
 
 let loadImages = async (imageUrls, try_nr) => {
   try {
@@ -51,7 +51,9 @@ function ReportDetailsScreen({ route }) {
         <AppText>{getLabelByValue(data.category.name)}</AppText>
       </AppDetailsItem>
       <AppDetailsItem title="Data utworzenia">
-        <AppText>{Moment(data.createDate).format("DD/MM/YYYY hh:mm")}</AppText>
+        <AppText>
+          {format(new Date(data.createDate), "dd/LL/yyyy hh:mm")}
+        </AppText>
       </AppDetailsItem>
       {data.description !== "" && (
         <AppDetailsItem title="Opis">

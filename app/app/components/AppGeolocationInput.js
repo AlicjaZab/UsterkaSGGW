@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import MapView, { Marker } from "react-native-maps";
-import { LATITUDE_DELTA, LONGITUDE_DELTA } from "../config/constants";
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { View } from "react-native";
 import * as Location from "expo-location";
 import { useFormikContext } from "formik";
 
@@ -14,8 +12,6 @@ function AppFormGeolocationInput({
   mapStyle,
   containerStyle,
 }) {
-  //const [region, setRegion] = useState();
-
   const { setFieldValue, values } = useFormikContext();
   const coordinates = values[name];
 
@@ -28,13 +24,7 @@ function AppFormGeolocationInput({
 
     let { coords } = await Location.getCurrentPositionAsync({});
     console.log(coords);
-    // setRegion({
-    //   latitude: coords.latitude,
-    //   longitude: coords.longitude,
-    //   latitudeDelta: LATITUDE_DELTA,
-    //   longitudeDelta: LONGITUDE_DELTA,
-    // });
-    //coordinates = { latitude: coords.latitude, longitude: coords.longitude };
+
     setFieldValue(name, {
       latitude: coords.latitude,
       longitude: coords.longitude,

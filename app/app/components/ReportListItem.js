@@ -1,13 +1,15 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
-import Moment from "moment";
+import { StyleSheet, View } from "react-native";
+import format from "date-fns/format";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import AppText from "./AppText";
-import colors from "../config/colors";
 import Icon from "./Icon";
+
 import { CATEGORY_TO_ICON } from "../config/constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { getLabelByValue } from "../utils/getCategory";
+import colors from "../config/colors";
+
 //could be also image - icon representing category
 const ReportListItem = ({ navigation, reportData }) => {
   const onPress = () => {
@@ -26,7 +28,7 @@ const ReportListItem = ({ navigation, reportData }) => {
             {getLabelByValue(reportData.category.name)}
           </AppText>
           <AppText style={styles.date}>
-            {Moment(reportData.createDate).format("DD/MM/YYYY hh:mm")}
+            {format(new Date(reportData.createDate), "dd/LL/yyyy hh:mm")}
           </AppText>
         </View>
       </View>

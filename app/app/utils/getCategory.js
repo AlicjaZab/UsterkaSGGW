@@ -1,5 +1,4 @@
 import { CATEGORIES } from "../config/constants";
-import _ from "lodash";
 
 import {
   CATEGORY_TO_TAGS,

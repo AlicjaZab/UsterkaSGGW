@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, StyleSheet, TouchableOpacity, Text } from "react-native";
-import colors from "../config/colors";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 import AppText from "./AppText";
+
+import colors from "../config/colors";
 
 function AppSmallButton({ label, color = colors.secondary, onPress }) {
   return (
@@ -15,7 +16,6 @@ function AppSmallButton({ label, color = colors.secondary, onPress }) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.secondary,
-    //width: "100%",
     padding: 10,
     alignSelf: "flex-start",
     alignItems: "center",

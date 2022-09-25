@@ -1,5 +1,3 @@
-//import React from 'react';
-
 const createFormData = (object) => {
   const data = new FormData();
 

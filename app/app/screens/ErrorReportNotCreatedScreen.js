@@ -1,10 +1,11 @@
 import React from "react";
-import Screen from "../components/Screen";
-import { View, Image, Text, StyleSheet } from "react-native";
-import AppText from "../components/AppText";
-import colors from "../config/colors";
-import Icon from "../components/Icon";
+import { View, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import Screen from "../components/Screen";
+import AppText from "../components/AppText";
+
+import colors from "../config/colors";
 
 function ErrorReportNotCreatedScreen({ route }) {
   const { data } = route.params;

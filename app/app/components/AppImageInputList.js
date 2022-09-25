@@ -1,7 +1,9 @@
 import React, { useRef } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+
 import AppImageDeletableMinature from "./AppImageDeletableMinature";
 import AppImageInput from "./AppImageInput";
+
 import { MAX_IMAGE_COUNT } from "../config/constants";
 
 function AppImageInputList({ images = [], onRemoveImage, onAddImage }) {

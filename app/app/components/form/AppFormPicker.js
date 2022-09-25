@@ -1,11 +1,7 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import { View } from "react-native";
 
 import AppPicker from "../AppPicker";
-import AppText from "../AppText";
-import ErrorMessage from "./ErrorMessage";
-import defaultStyles from "../../config/styles";
 
 function AppFormPicker({ items, name, placeholder, width }) {
   const { setFieldValue, values } = useFormikContext();

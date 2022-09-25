@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useFormikContext } from "formik";
 import { View, StyleSheet } from "react-native";
+import isNil from "lodash/isNil";
+
 import AppText from "../AppText";
 import AppImageInputList from "../AppImageInputList";
-import createFormData from "../../utils/createFormData";
-import tagsClient from "../../api/tags";
-import _ from "lodash";
+
 import colors from "../../config/colors";
 import getCategory from "../../utils/getCategory";
-import { printCategoriesForPhotosWithTags } from "../../utils/getCategory";
-import { REACT_APP_tags_PROVIDER } from "@env";
+import createFormData from "../../utils/createFormData";
+import tagsClient from "../../api/tags";
 
 var tagsProvider = "None";
 
@@ -129,7 +129,7 @@ function AppFormImagePicker({ name, name2, ...otherProps }) {
             (connectedPhotoObject) => connectedPhotoObject.confidence
           )
         );
-        if (!_.isNil(newTagObject.topicality)) {
+        if (!isNil(newTagObject.topicality)) {
           oldTagObject.topicality = Math.max.apply(
             null,
             oldTagObject.connectedPhotos.map(

@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, StyleSheet, TouchableOpacity, Text } from "react-native";
-import colors from "../config/colors";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppText from "./AppText";
+
+import colors from "../config/colors";
 
 function AppButton({
   label,

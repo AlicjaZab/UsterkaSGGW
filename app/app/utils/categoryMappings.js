@@ -374,6 +374,3 @@ export const CATEGORY_TO_TAGS_FULL = {
     "paper towel holder", //
   ],
 };
-
-//changes: rem: machine, water,building material, sidewalk, concrete, paper
-// waste container & recycyle bin -> secondary map

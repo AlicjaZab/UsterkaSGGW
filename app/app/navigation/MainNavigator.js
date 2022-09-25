@@ -1,17 +1,17 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Image, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import AddReportScreen from "../screens/AddReportScreen";
 import StartupScreen from "../screens/StartupScreen";
 import ReportDetailsScreen from "../screens/ReportDetailsScreen";
 import ReportsListScreen from "../screens/ReportsListScreen";
 import ErrorReportNotCreatedScreen from "../screens/ErrorReportNotCreatedScreen";
-import colors from "../config/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
 import AppText from "../components/AppText";
 import Icon from "../components/Icon";
+
+import colors from "../config/colors";
 
 const Stack = createStackNavigator();
 

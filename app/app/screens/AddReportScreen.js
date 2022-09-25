@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
-import AppForm from "../components/form/AppForm";
 import * as Yup from "yup";
-import AppFormTextInput from "../components/form/AppFormTextInput";
-import { Alert, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  KeyboardAvoidingView,
+  View,
+  ActivityIndicator,
+} from "react-native";
 
+import AppForm from "../components/form/AppForm";
+import AppFormTextInput from "../components/form/AppFormTextInput";
 import Screen from "../components/Screen";
-import colors from "../config/colors";
 import AppButton from "../components/AppButton";
 import AppFormPicker from "../components/form/AppFormPicker";
 import SubmitButton from "../components/form/SubmitButton";
 import AppFormImagePicker from "../components/form/AppFormImagePicker";
 import AppFormItem from "../components/form/AppFormItem";
+import AppText from "../components/AppText";
+import AppFormGeolocationInput from "../components/AppGeolocationInput";
+
 import reportsApi from "../api/reports";
 import mediaObjectApi from "../api/mediaObject";
-import { View, ActivityIndicator } from "react-native";
-
-import {
-  LATITUDE_DELTA,
-  LONGITUDE_DELTA,
-  MAX_IMAGE_COUNT,
-} from "../config/constants";
-import AppFormGeolocationInput from "../components/AppGeolocationInput";
-import { CATEGORIES } from "../config/constants";
-import AppText from "../components/AppText";
+import colors from "../config/colors";
+import { MAX_IMAGE_COUNT, CATEGORIES } from "../config/constants";
 
 const validationSchema = Yup.object().shape({
   photos: Yup.array()
