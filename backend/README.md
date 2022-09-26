@@ -17,11 +17,14 @@ Po klinięciu "Dodaj" na serwerze utworzony zostanie folder w lokalizacji
 w którym należy umieścić pliki strony.
 
 Dla utworzonego folderu należy kliknąć przycisk "Zarządzaj" i ustawić szczegóły strony jak poniżej 
-(dla "Katalog", w miejscu "jaylabit" wpisać nazwę klienta z maila aktywacyjnego, w miejscu "usterkasggw.jaylab.pl" nazwę utworzonej domeny, 
-pole "Katalogi Open Basedir" powinno wypełnić się automatycznie):
-
-/usr/home/jaylabit/domains/usterka-sggw.jaylab.pl/public_html:/tmp:/usr/share:/usr/local/share:/dev:/tmp:/usr/share:/usr/local/share:/dev:/usr/home/jaylabit/domains/usterka-sggw.jaylab.pl
-
+* dla "Katalog", w miejscu "jaylabit" wpisać nazwę klienta z maila aktywacyjnego, w miejscu "usterkasggw.jaylab.pl" nazwę utworzonej domeny, 
+* dla "Katalogi Open Basedir" wypełnić według schematu:
+```
+/usr/home/{nazwa klienta z maila aktywacyjnego}/domains/{nazwa domeny}/public_html:/tmp:/usr/share:/usr/local/share:/dev:/tmp:/usr/share:/usr/local/share:/dev:/usr/home/{nazwa klienta z maila aktywacyjnego}/domains/{nazwa domeny}
+```
+Przykładowo:
+```/usr/home/jaylabit/domains/usterkasggw.jaylab.pl/public_html:/tmp:/usr/share:/usr/local/share:/dev:/tmp:/usr/share:/usr/local/share:/dev:/usr/home/jaylabit/domains/usterkasggw.jaylab.pl
+```
 
 ![image](https://user-images.githubusercontent.com/56516909/192348351-6595ab9a-77b8-4b04-be5e-7fb0be462b24.png)
 
@@ -104,6 +107,12 @@ nano domains/{podany adres/nazwa strony}/.env
   Przykładowa wartość dla serwera utworzonego w tej instrukcji: 
   ```
   mtp://sendmail@jaylab.pl:xxxxxxxx@mail30.mydevil.net:25
+  ```
+  
+* **SERVER_MAIL** - mail z którego powinien korzystać serwer backend do wysyłania maili do osób z personelu ( powinien być zgodny z poprzednią zmienną "MAILER_DSN)
+  Przykładowo:
+  ```
+  SERVER_MAIL=sendmail@jaylab.pl
   ```
   
 * **HTTP_BASIC_AUTH_USERNAME** - nazwa użytkownika, która ma być wykorzystywana przy autoryzacji zapytań API (Basic Auth). Przykładowo:
