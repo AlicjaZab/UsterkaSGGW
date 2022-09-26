@@ -27,7 +27,7 @@ final class EmailSendingService
 
 
             $email = (new TemplatedEmail())
-                ->from(new Address('usterka.sggw@jaylab.pl', 'Usterka SGGW'))
+                ->from(new Address($_ENV['SERVER_MAIL'], 'Usterka SGGW'))
                 ->to($reciepientEmail)
                 ->subject("New report for category " . $category)
                 ->htmlTemplate('email/new-report-created.html.twig')
