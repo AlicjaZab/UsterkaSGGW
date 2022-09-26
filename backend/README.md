@@ -20,6 +20,9 @@ Dla utworzonego folderu należy kliknąć przycisk "Zarządzaj" i ustawić szcze
 (dla "Katalog", w miejscu "jaylabit" wpisać nazwę klienta z maila aktywacyjnego, w miejscu "usterkasggw.jaylab.pl" nazwę utworzonej domeny, 
 pole "Katalogi Open Basedir" powinno wypełnić się automatycznie):
 
+/usr/home/jaylabit/domains/usterka-sggw.jaylab.pl/public_html:/tmp:/usr/share:/usr/local/share:/dev:/tmp:/usr/share:/usr/local/share:/dev:/usr/home/jaylabit/domains/usterka-sggw.jaylab.pl
+
+
 ![image](https://user-images.githubusercontent.com/56516909/192348351-6595ab9a-77b8-4b04-be5e-7fb0be462b24.png)
 
 
@@ -180,7 +183,7 @@ Pozostałych zmiennych należy nie zmieniać.
   
   Ustawienie sposobu logowania interpretera PHP
   ```
-  cat <<EOT >> user.ini
+  cat <<EOT >> .user.ini
   error_reporting = E_ERROR | E_WARNING | E_PARSE | E_NOTICE
   display_errors = off
   log_errors = on
